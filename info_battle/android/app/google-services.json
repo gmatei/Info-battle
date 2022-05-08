@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1024860820572",
+    "project_id": "info-battle",
+    "storage_bucket": "info-battle.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024860820572:android:856bbc78f0e2ebbd8a8299",
+        "android_client_info": {
+          "package_name": "com.gmatei.info_battle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1024860820572-te1ik82omrfgf6cgfcei0qrd02fftcvd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrlLyyGs-mdk58EnTJIypHOXQZdJwSdcc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1024860820572-te1ik82omrfgf6cgfcei0qrd02fftcvd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
