@@ -4,7 +4,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:info_battle/models/app_user.dart';
-import 'package:info_battle/screens/wrapper.dart';
+import 'package:info_battle/screens/wrappers/auth_wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:info_battle/services/auth.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  print("firebase initialized");
   runApp(const MyApp());
 }
 
