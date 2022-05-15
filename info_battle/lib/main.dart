@@ -1,12 +1,14 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, missing_required_param
 // @dart=2.9
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:info_battle/models/app_user.dart';
+import 'package:info_battle/models/user_data.dart';
 import 'package:info_battle/screens/wrappers/auth_wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:info_battle/services/auth.dart';
+import 'package:info_battle/services/database.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -21,9 +23,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<AppUser>.value(
-      value: AuthService().user,
-      initialData: AppUser(uid: "none"),
+    return MultiProvider(
+      providers: [
+        StreamProvider<AppUser>.value(value: AuthService().user),
+      ],
       child: MaterialApp(
         home: Wrapper(),
       ),

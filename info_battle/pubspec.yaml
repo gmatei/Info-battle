@@ -38,6 +38,11 @@ dependencies:
   cloud_firestore: ^3.1.14
   provider: ^6.0.2
   flutter_spinkit: ^5.1.0
+  image_cropper: ^2.0.2
+  image_picker: ^0.8.5+3
+  path_provider: ^2.0.10
+  flutter_image_compress: ^1.1.0
+  firebase_storage: ^10.2.16
 
 dev_dependencies:
   flutter_test:

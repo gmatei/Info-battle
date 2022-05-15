@@ -38,7 +38,10 @@ class AuthService {
       User user = result.user;
 
       //create a new document for the user with the uid
-      await DatabaseService(uid: user.uid).updateUserData(user.email);
+      await DatabaseService(uid: user.uid).updateUserData(
+          user.email.split('@')[0],
+          'https://www.pikpng.com/pngl/m/238-2387180_avatar-profile-png-icon-avatar-gamer-png-clipart.png',
+          user.email);
 
       return _appUserFromUser(user);
     } catch (error) {
