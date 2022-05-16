@@ -64,7 +64,8 @@ class _EditProfileState extends State<EditProfile> {
                         )),
                         validator: (val) =>
                             val.isEmpty ? 'Please enter a nickname' : null,
-                        onChanged: (val) => setState(() => _currentName = val),
+                        onChanged: (val) =>
+                            setState(() => _currentName = val.trim()),
                       ),
                       SizedBox(height: 20.0),
                       ElevatedButton(

@@ -13,6 +13,9 @@ class DatabaseService {
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
 
+  final CollectionReference questionCollection =
+      FirebaseFirestore.instance.collection('questions');
+
   Future updateUserData(String nickname, String imagepath, String email) async {
     return await userCollection.doc(uid).set({
       'uid': uid,
@@ -34,5 +37,21 @@ class DatabaseService {
   //get profile stream
   Stream<UserData> get profile {
     return userCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
+  }
+
+  Future<void> addQuizData(Map quizData, String quizId) async {
+    await questionCollection.doc(quizId).set(quizData).catchError((e) {
+      print(e);
+    });
+  }
+
+  Future<void> addQuestionData(quizData, String quizId) async {
+    await questionCollection
+        .doc(quizId)
+        .collection("QuizContent")
+        .add(quizData)
+        .catchError((e) {
+      print(e);
+    });
   }
 }
