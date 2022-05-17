@@ -120,9 +120,10 @@ class _QuizCreatorState extends State<QuizCreator> {
       });
 
       Map<String, String> quizData = {
+        "quizId": quizId,
         "quizAddedBy": userData.name,
         "quizTitle": _quizTitle,
-        "quizDescription": _quizDescription
+        "quizDescription": _quizDescription,
       };
 
       databaseService.addQuizData(quizData, quizId).then((value) {

@@ -5,13 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
+import 'package:info_battle/screens/play/play.dart';
 import 'package:info_battle/screens/profile/profile.dart';
+import 'package:info_battle/screens/quiz_creator/quiz_creator.dart';
 import 'package:info_battle/services/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:info_battle/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../quiz_creator/quiz_creator.dart';
 
 class Home extends StatefulWidget {
   final Function toggleView;
@@ -62,7 +62,11 @@ class _HomeState extends State<Home> {
                 'Play',
                 style: TextStyle(fontSize: 20.0),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => PlayGame()),
+                );
+              },
             ),
           ),
           Container(
