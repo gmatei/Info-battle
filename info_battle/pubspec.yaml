@@ -43,6 +43,7 @@ dependencies:
   path_provider: ^2.0.10
   flutter_image_compress: ^1.1.0
   firebase_storage: ^10.2.16
+  flutter_html: ^2.2.1
 
 dev_dependencies:
   flutter_test:

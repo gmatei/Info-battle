@@ -2,14 +2,16 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:info_battle/models/game_data.dart';
 import 'package:info_battle/models/question.dart';
 import 'package:info_battle/models/questionset.dart';
 import 'package:info_battle/models/user_data.dart';
 
 class DatabaseService {
   final String uid;
+  final String gameid;
 
-  DatabaseService({this.uid});
+  DatabaseService({this.uid, this.gameid});
 
   //collection reference
   final CollectionReference userCollection =
@@ -17,6 +19,9 @@ class DatabaseService {
 
   final CollectionReference questionCollection =
       FirebaseFirestore.instance.collection('questions');
+
+  final CollectionReference gameCollection =
+      FirebaseFirestore.instance.collection('games');
 
   Future updateUserData(String nickname, String imagepath, String email) async {
     return await userCollection.doc(uid).set({
@@ -36,14 +41,26 @@ class DatabaseService {
         imagePath: snapshot.get('imagepath'));
   }
 
+  GameData _gameDataFromSnapshot(DocumentSnapshot snapshot) {
+    return GameData(
+      gameId: snapshot.get('gameId'),
+      nrConnectedUsers: snapshot.get('nrConnectedUsers'),
+    );
+  }
+
   //get profile stream
   Stream<UserData> get profile {
     return userCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
   }
 
-  // get brews stream
+  // get question sets stream
   Stream<List<QuestionSet>> get questionSets {
     return questionCollection.snapshots().map(_questionSetListFromSnapshot);
+  }
+
+  // get game stream
+  Stream<GameData> get currentGame {
+    return gameCollection.doc(gameid).snapshots().map(_gameDataFromSnapshot);
   }
 
   List<QuestionSet> _questionSetListFromSnapshot(QuerySnapshot snapshot) {
@@ -68,6 +85,39 @@ class DatabaseService {
         .doc(quizId)
         .collection("QuizContent")
         .add(quizData)
+        .catchError((e) {
+      print(e);
+    });
+  }
+
+  Future createGame(String uid, String gameCode) async {
+    return await gameCollection.doc(gameCode).set({
+      'gameId': gameCode,
+      'nrConnectedUsers': 0,
+    });
+  }
+
+  Future<void> addPlayer(UserData userData, String gameCode) async {
+    Map<String, String> userMap = {
+      "uid": userData.uid,
+      "name": userData.name,
+      "imagePath": userData.imagePath
+    };
+
+    int nrConnected;
+    await gameCollection.doc(gameCode).get().then((DocumentSnapshot ds) {
+      nrConnected = ds.get('nrConnectedUsers');
+    });
+
+    await gameCollection.doc(gameCode).set({
+      'gameId': gameCode,
+      'nrConnectedUsers': nrConnected + 1,
+    });
+
+    await gameCollection
+        .doc(gameCode)
+        .collection("GamePlayers")
+        .add(userMap)
         .catchError((e) {
       print(e);
     });

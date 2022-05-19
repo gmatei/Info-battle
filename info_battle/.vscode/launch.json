@@ -1,0 +1,52 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "info_battle",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "info_battle (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "info_battle (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "OnePlus7T",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "4e02cf44"
+        },
+        {
+            "name": "PixelXL",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "emulator-5554"
+        },
+        {
+            "name": "PixelXL_2",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "emulator-5556"
+        },
+        
+    ],
+    "compounds": [
+        {
+            "name": "All phones",
+            "configurations": ["OnePlus7T", "PixelXL", "PixelXL_2"]
+        }
+    ]
+
+}
