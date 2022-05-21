@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:info_battle/models/questionset.dart';
 import 'package:info_battle/screens/game/game_manager.dart';
 import 'package:info_battle/screens/play/question_selector.dart';
 import 'dart:math';
@@ -18,7 +19,13 @@ import '../../models/user_data.dart';
 import '../../services/database.dart';
 
 class CreateGame extends StatefulWidget {
-  const CreateGame({Key key}) : super(key: key);
+  CreateGame({Key key}) : super(key: key);
+
+  List<QuestionSet> listOfQSets;
+
+  callBack(List<QuestionSet> listFromChild) {
+    listOfQSets = listFromChild;
+  }
 
   @override
   State<CreateGame> createState() => _CreateGameState();
@@ -27,6 +34,7 @@ class CreateGame extends StatefulWidget {
 class _CreateGameState extends State<CreateGame> {
   bool _createGameOn = false;
   String inviteCode = generateInviteCode();
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<AppUser>(context);
@@ -45,7 +53,8 @@ class _CreateGameState extends State<CreateGame> {
                       if (gameData.nrConnectedUsers == 3) {
                         Future.delayed(Duration.zero, () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => GameManager(user.uid)));
+                              builder: (context) =>
+                                  GameManager(userData, gameData)));
                         });
                         return Container();
                       } else {
@@ -128,9 +137,13 @@ class _CreateGameState extends State<CreateGame> {
                           style: TextStyle(fontSize: 20.0),
                         ),
                         onPressed: () {
+                          if (widget.listOfQSets != null) {
+                            widget.listOfQSets.clear();
+                          }
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) => QuestionSelector()),
+                                builder: (context) =>
+                                    QuestionSelector(widget.callBack)),
                           );
                         },
                       ),
@@ -150,13 +163,17 @@ class _CreateGameState extends State<CreateGame> {
                           style: TextStyle(fontSize: 20.0),
                         ),
                         onPressed: () async {
-                          setState(() {
-                            _createGameOn = true;
-                          });
-                          await DatabaseService()
-                              .createGame(user.uid, inviteCode);
-                          await DatabaseService(gameid: inviteCode)
-                              .addPlayer(userData, inviteCode);
+                          if (widget.listOfQSets != null) {
+                            setState(() {
+                              _createGameOn = true;
+                            });
+                            await DatabaseService()
+                                .createGame(user.uid, inviteCode);
+                            await DatabaseService(gameid: inviteCode)
+                                .addPlayer(userData, inviteCode);
+                            await DatabaseService(gameid: inviteCode)
+                                .addQuestionsToGame(widget.listOfQSets);
+                          }
                         },
                       ),
                     ),

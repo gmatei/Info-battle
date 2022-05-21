@@ -3,6 +3,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:info_battle/models/game_data.dart';
+import 'package:info_battle/models/game_player.dart';
 import 'package:info_battle/models/question.dart';
 import 'package:info_battle/models/questionset.dart';
 import 'package:info_battle/models/user_data.dart';
@@ -56,6 +57,15 @@ class DatabaseService {
   // get question sets stream
   Stream<List<QuestionSet>> get questionSets {
     return questionCollection.snapshots().map(_questionSetListFromSnapshot);
+  }
+
+  // get players stream
+  Stream<List<PlayerData>> get gamePlayers {
+    return gameCollection
+        .doc(gameid)
+        .collection("GamePlayers")
+        .snapshots()
+        .map(_gamePlayersListFromSnapshot);
   }
 
   // get game stream
@@ -114,13 +124,55 @@ class DatabaseService {
       'nrConnectedUsers': nrConnected + 1,
     });
 
-    await gameCollection
-        .doc(gameCode)
-        .collection("GamePlayers")
-        .add(userMap)
-        .catchError((e) {
-      print(e);
-    });
+    await gameCollection.doc(gameCode).collection("GamePlayers").add(userMap);
+  }
+
+  List<PlayerData> _gamePlayersListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return PlayerData(
+        uid: doc.get('uid') ?? '',
+        name: doc.get('name') ?? '',
+        imagePath: doc.get('imagePath') ?? '',
+      );
+    }).toList();
+  }
+
+  Future<void> addQuestionsToGame(List<QuestionSet> questionSets) async {
+    for (QuestionSet questionSet in questionSets) {
+      Stream<List<Question>> currentEntries = questionCollection
+          .doc(questionSet.qsetId)
+          .collection("QuizContent")
+          .snapshots()
+          .map(_questionListFromSnapshot);
+
+      currentEntries.listen((listOfQuestions) async {
+        for (Question question in listOfQuestions) {
+          Map<String, String> questionMap = {
+            "qText": question.qText,
+            "option1": question.option1,
+            "option2": question.option2,
+            "option3": question.option3,
+            "option4": question.option4,
+          };
+          await gameCollection
+              .doc(gameid)
+              .collection("GameQuestions")
+              .add(questionMap);
+        }
+      });
+    }
+  }
+
+  List<Question> _questionListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return Question(
+        qText: doc.get('question') ?? '',
+        option1: doc.get('option1') ?? '',
+        option2: doc.get('option2') ?? '',
+        option3: doc.get('option3') ?? '',
+        option4: doc.get('option4') ?? '',
+      );
+    }).toList();
   }
 }
 

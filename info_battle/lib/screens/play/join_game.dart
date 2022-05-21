@@ -44,7 +44,8 @@ class _JoinGameState extends State<JoinGame> {
                       if (gameData.nrConnectedUsers == 3) {
                         Future.delayed(Duration.zero, () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => GameManager(user.uid)));
+                              builder: (context) =>
+                                  GameManager(userData, gameData)));
                         });
                         return Container();
                       } else {
@@ -169,12 +170,15 @@ class _JoinGameState extends State<JoinGame> {
                             ),
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
-                                setState(() {
-                                  _joinedGame = true;
-                                });
-
-                                await DatabaseService(gameid: _currentCode)
-                                    .addPlayer(userData, _currentCode);
+                                try {
+                                  await DatabaseService(gameid: _currentCode)
+                                      .addPlayer(userData, _currentCode);
+                                  setState(() {
+                                    _joinedGame = true;
+                                  });
+                                } catch (e) {
+                                  _joinedGame = false;
+                                }
                               }
                             }),
                         _joinedGame

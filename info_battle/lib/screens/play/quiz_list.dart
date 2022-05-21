@@ -9,7 +9,12 @@ import 'package:info_battle/screens/play/quiz_tile.dart';
 import 'package:provider/provider.dart';
 
 class QuizList extends StatefulWidget {
-  const QuizList({Key key}) : super(key: key);
+  QuizList(
+    this.callBackCheck, {
+    Key key,
+  }) : super(key: key);
+
+  Function callBackCheck;
 
   @override
   State<QuizList> createState() => _QuizListState();
@@ -21,11 +26,16 @@ class _QuizListState extends State<QuizList> {
     final quizzes = Provider.of<List<QuestionSet>>(context);
 
     return ListView.builder(
+      shrinkWrap: true,
+      primary: false,
       padding: EdgeInsets.symmetric(horizontal: 32),
       physics: BouncingScrollPhysics(),
       itemCount: quizzes.length,
       itemBuilder: (context, index) {
-        return QuizTile(quiz: quizzes[index]);
+        return QuizTile(
+          quiz: quizzes[index],
+          callBackCheck: widget.callBackCheck,
+        );
       },
     );
   }
