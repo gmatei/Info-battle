@@ -1,6 +1,10 @@
 //@dart=2.9
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:async';
+import 'dart:io';
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:info_battle/models/game_data.dart';
 import 'package:info_battle/models/game_player.dart';
@@ -46,6 +50,13 @@ class DatabaseService {
     return GameData(
       gameId: snapshot.get('gameId'),
       nrConnectedUsers: snapshot.get('nrConnectedUsers'),
+      command: snapshot.get('command'),
+      activePlayer: snapshot.get('activePlayer'),
+      currentRound: snapshot.get('currentRound'),
+      player1: snapshot.get('player1'),
+      player2: snapshot.get('player2'),
+      player3: snapshot.get('player3'),
+      attackedPlayer: snapshot.get('attacked'),
     );
   }
 
@@ -57,6 +68,30 @@ class DatabaseService {
   // get question sets stream
   Stream<List<QuestionSet>> get questionSets {
     return questionCollection.snapshots().map(_questionSetListFromSnapshot);
+  }
+
+  //get random question stream
+  Stream<Question> get randomQuestion {
+    return gameCollection
+        .doc(gameid)
+        .collection("GameQuestions")
+        .snapshots()
+        .map(_questionFromSnapshot);
+  }
+
+  Question _questionFromSnapshot(QuerySnapshot snapshot) {
+    List<Question> questionList = snapshot.docs.map((doc) {
+      return Question(
+        qText: doc.get('qText') ?? '',
+        option1: doc.get('option1') ?? '',
+        option2: doc.get('option2') ?? '',
+        option3: doc.get('option3') ?? '',
+        option4: doc.get('option4') ?? '',
+      );
+    }).toList();
+
+    final random = Random();
+    return questionList[random.nextInt(questionList.length)];
   }
 
   // get players stream
@@ -104,6 +139,13 @@ class DatabaseService {
     return await gameCollection.doc(gameCode).set({
       'gameId': gameCode,
       'nrConnectedUsers': 0,
+      'command': 'init',
+      'activePlayer': 'none',
+      'currentRound': 1,
+      'player1': 'none',
+      'player2': 'none',
+      'player3': 'none',
+      'attacked': 'none'
     });
   }
 
@@ -115,14 +157,62 @@ class DatabaseService {
     };
 
     int nrConnected;
+    String player1, player2, player3;
+
     await gameCollection.doc(gameCode).get().then((DocumentSnapshot ds) {
       nrConnected = ds.get('nrConnectedUsers');
     });
 
-    await gameCollection.doc(gameCode).set({
-      'gameId': gameCode,
-      'nrConnectedUsers': nrConnected + 1,
+    await gameCollection.doc(gameCode).get().then((DocumentSnapshot ds) {
+      player1 = ds.get('player1');
     });
+
+    await gameCollection.doc(gameCode).get().then((DocumentSnapshot ds) {
+      player2 = ds.get('player2');
+    });
+
+    await gameCollection.doc(gameCode).get().then((DocumentSnapshot ds) {
+      player3 = ds.get('player3');
+    });
+
+    if (nrConnected == 0) {
+      await gameCollection.doc(gameCode).update({
+        'gameId': gameCode,
+        'nrConnectedUsers': nrConnected + 1,
+        'command': 'init',
+        'activePlayer': 'none',
+        'currentRound': 1,
+        'player1': userData.name,
+        'player2': player2,
+        'player3': player3,
+      });
+    }
+
+    if (nrConnected == 1) {
+      await gameCollection.doc(gameCode).update({
+        'gameId': gameCode,
+        'nrConnectedUsers': nrConnected + 1,
+        'command': 'init',
+        'activePlayer': 'none',
+        'currentRound': 1,
+        'player1': player1,
+        'player2': userData.name,
+        'player3': player3,
+      });
+    }
+
+    if (nrConnected == 2) {
+      await gameCollection.doc(gameCode).update({
+        'gameId': gameCode,
+        'nrConnectedUsers': nrConnected + 1,
+        'command': 'init',
+        'activePlayer': 'none',
+        'currentRound': 1,
+        'player1': player1,
+        'player2': player2,
+        'player3': userData.name,
+      });
+    }
 
     await gameCollection.doc(gameCode).collection("GamePlayers").add(userMap);
   }
@@ -174,21 +264,74 @@ class DatabaseService {
       );
     }).toList();
   }
+
+  Future updateCommand(String command, String active, {String attacked}) async {
+    int timeValue;
+    String activePlayer;
+
+    switch (active) {
+      case 'player1':
+        {
+          await gameCollection.doc(gameid).get().then((DocumentSnapshot ds) {
+            activePlayer = ds.get('player1');
+          });
+        }
+        break;
+      case 'player2':
+        {
+          await gameCollection.doc(gameid).get().then((DocumentSnapshot ds) {
+            activePlayer = ds.get('player2');
+          });
+        }
+        break;
+      case 'player3':
+        {
+          await gameCollection.doc(gameid).get().then((DocumentSnapshot ds) {
+            activePlayer = ds.get('player3');
+          });
+        }
+        break;
+      default:
+        {
+          activePlayer = active;
+        }
+    }
+
+    switch (command) {
+      case 'init':
+        {
+          timeValue = 7;
+        }
+        break;
+      case 'round':
+        {
+          timeValue = 7;
+        }
+        break;
+      default:
+        {
+          timeValue = 3;
+        }
+        break;
+    }
+
+    if (attacked != 'none') {
+      Timer(Duration(seconds: timeValue), () async {
+        await gameCollection.doc(gameid).update({
+          'command': command,
+          'activePlayer': activePlayer,
+          'currentRound': 1,
+          'attacked': attacked
+        });
+      });
+    } else {
+      Timer(Duration(seconds: timeValue), () async {
+        await gameCollection.doc(gameid).update({
+          'command': command,
+          'activePlayer': activePlayer,
+          'currentRound': 1,
+        });
+      });
+    }
+  }
 }
-
-  // Future<List<Question>> returnQuestionsFromSet(String quizId) async {
-  //   QuerySnapshot querySnapshot =
-  //       await questionCollection.doc("123").collection("QuizContent").get();
-
-  //   return querySnapshot.docs.map(_questionsFromSnapshot).toList();
-  // }
-
-  // Question _questionsFromSnapshot(DocumentSnapshot snapshot) {
-
-  //   return Question(
-  //       qText: snapshot.get('quizId'),
-  //       option1: snapshot.get('quizAddedBy'),
-  //       option2: snapshot.get('quizTitle'),
-  //       option3: snapshot.get('quizDescription'),
-  //       option4: questions);
-  // }
