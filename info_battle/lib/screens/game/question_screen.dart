@@ -5,14 +5,17 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:info_battle/models/game_data.dart';
 import 'package:info_battle/models/question.dart';
+import 'package:info_battle/models/user_data.dart';
 import 'package:info_battle/utils/loading.dart';
 
 import '../../services/database.dart';
 
 class QuestionScreen extends StatefulWidget {
-  const QuestionScreen(this.gameData, {Key key}) : super(key: key);
+  const QuestionScreen(this.gameData, this.userData, {Key key})
+      : super(key: key);
 
   final GameData gameData;
+  final UserData userData;
 
   @override
   State<QuestionScreen> createState() => _QuestionScreenState();
@@ -22,7 +25,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Question>(
-        stream: DatabaseService(gameid: widget.gameData.gameId).randomQuestion,
+        stream: DatabaseService(gameid: widget.gameData.gameId).currentQuestion,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             Question questionData = snapshot.data;

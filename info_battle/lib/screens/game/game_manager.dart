@@ -57,7 +57,7 @@ class _GameManagerState extends State<GameManager> {
                         children: [
                           PlayerList(),
                           AlertDialogManager(gameData, widget.userData),
-                          CommandManager(gameData),
+                          CommandManager(widget.userData, gameData),
                         ],
                       ));
                 } else {
@@ -67,7 +67,7 @@ class _GameManagerState extends State<GameManager> {
                         title: Text('Question'),
                         elevation: 10.0,
                       ),
-                      body: QuestionScreen(gameData));
+                      body: QuestionScreen(gameData, widget.userData));
                 }
               } else {
                 return Loading();

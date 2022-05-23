@@ -48,16 +48,16 @@ class DatabaseService {
 
   GameData _gameDataFromSnapshot(DocumentSnapshot snapshot) {
     return GameData(
-      gameId: snapshot.get('gameId'),
-      nrConnectedUsers: snapshot.get('nrConnectedUsers'),
-      command: snapshot.get('command'),
-      activePlayer: snapshot.get('activePlayer'),
-      currentRound: snapshot.get('currentRound'),
-      player1: snapshot.get('player1'),
-      player2: snapshot.get('player2'),
-      player3: snapshot.get('player3'),
-      attackedPlayer: snapshot.get('attacked'),
-    );
+        gameId: snapshot.get('gameId'),
+        nrConnectedUsers: snapshot.get('nrConnectedUsers'),
+        command: snapshot.get('command'),
+        activePlayer: snapshot.get('activePlayer'),
+        currentRound: snapshot.get('currentRound'),
+        player1: snapshot.get('player1'),
+        player2: snapshot.get('player2'),
+        player3: snapshot.get('player3'),
+        attackedPlayer: snapshot.get('attacked'),
+        currentQuestion: {...snapshot.get('currentQuestion')});
   }
 
   //get profile stream
@@ -70,13 +70,46 @@ class DatabaseService {
     return questionCollection.snapshots().map(_questionSetListFromSnapshot);
   }
 
-  //get random question stream
-  Stream<Question> get randomQuestion {
-    return gameCollection
+  Future updateQuestion() async {
+    Stream<Question> randomQuestion = gameCollection
         .doc(gameid)
         .collection("GameQuestions")
         .snapshots()
         .map(_questionFromSnapshot);
+
+    randomQuestion.listen((question) async {
+      Map<String, String> questionMap = {
+        'qText': question.qText,
+        'option1': question.option1,
+        'option2': question.option2,
+        'option3': question.option3,
+        'option4': question.option4
+      };
+
+      await gameCollection.doc(gameid).update({
+        'currentQuestion': questionMap,
+      });
+      return;
+    });
+  }
+
+  //get random question stream
+  Stream<Question> get currentQuestion {
+    return gameCollection
+        .doc(gameid)
+        .snapshots()
+        .map(_currentQuestionFromSnapshot);
+  }
+
+  Question _currentQuestionFromSnapshot(DocumentSnapshot snapshot) {
+    Map<String, String> question = {...snapshot.get('currentQuestion')};
+    return Question(
+      qText: question['qText'],
+      option1: question['option1'],
+      option2: question['option2'],
+      option3: question['option3'],
+      option4: question['option4'],
+    );
   }
 
   Question _questionFromSnapshot(QuerySnapshot snapshot) {
@@ -136,6 +169,14 @@ class DatabaseService {
   }
 
   Future createGame(String uid, String gameCode) async {
+    Map<String, String> currentQuestion = {
+      'qText': 'none',
+      'option1': 'option1',
+      'option2': 'option2',
+      'option3': 'option3',
+      'option4': 'option4'
+    };
+
     return await gameCollection.doc(gameCode).set({
       'gameId': gameCode,
       'nrConnectedUsers': 0,
@@ -145,7 +186,8 @@ class DatabaseService {
       'player1': 'none',
       'player2': 'none',
       'player3': 'none',
-      'attacked': 'none'
+      'attacked': 'none',
+      'currentQuestion': currentQuestion
     });
   }
 

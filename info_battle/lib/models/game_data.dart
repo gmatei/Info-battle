@@ -1,5 +1,6 @@
 // @dart=2.9
 
+import 'package:info_battle/models/question.dart';
 import 'package:info_battle/models/user_data.dart';
 
 class GameData {
@@ -12,6 +13,7 @@ class GameData {
   final String player2;
   final String player3;
   final String attackedPlayer;
+  final Map<String, String> currentQuestion;
 
   const GameData(
       {this.gameId,
@@ -22,5 +24,6 @@ class GameData {
       this.player1,
       this.player2,
       this.player3,
-      this.attackedPlayer});
+      this.attackedPlayer,
+      this.currentQuestion});
 }
