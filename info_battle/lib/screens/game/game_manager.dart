@@ -46,7 +46,8 @@ class _GameManagerState extends State<GameManager> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 GameData gameData = snapshot.data;
-                if (gameData.command != 'question') {
+                if (gameData.command != 'question' &&
+                    gameData.command != 'showAnswer') {
                   return Scaffold(
                       appBar: AppBar(
                         backgroundColor: Colors.brown[400],
@@ -57,7 +58,9 @@ class _GameManagerState extends State<GameManager> {
                         children: [
                           PlayerList(),
                           AlertDialogManager(gameData, widget.userData),
-                          CommandManager(widget.userData, gameData),
+                          widget.gameData.activePlayer == widget.userData.name
+                              ? CommandManager(widget.userData, gameData)
+                              : SizedBox(width: 0.0, height: 0.0),
                         ],
                       ));
                 } else {
@@ -67,7 +70,12 @@ class _GameManagerState extends State<GameManager> {
                         title: Text('Question'),
                         elevation: 10.0,
                       ),
-                      body: QuestionScreen(gameData, widget.userData));
+                      body: Column(
+                        children: [
+                          QuestionScreen(gameData, widget.userData),
+                          CommandManager(widget.userData, gameData),
+                        ],
+                      ));
                 }
               } else {
                 return Loading();

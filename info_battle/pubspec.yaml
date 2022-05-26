@@ -45,6 +45,9 @@ dependencies:
   firebase_storage: ^10.2.16
   flutter_html: ^2.2.1
   animated_text_kit: ^4.2.1
+  flutter_countdown_timer: ^4.1.0
+  circular_countdown: ^2.1.0
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:

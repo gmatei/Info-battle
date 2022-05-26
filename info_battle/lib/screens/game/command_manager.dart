@@ -1,4 +1,6 @@
 //@dart=2.9
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'dart:async';
 import 'dart:io';
 
@@ -22,7 +24,8 @@ class CommandManager extends StatefulWidget {
 }
 
 class _CommandManagerState extends State<CommandManager> {
-  bool questionSelected = false;
+  bool questionUpdated = false;
+
   @override
   Widget build(BuildContext context) {
     DatabaseService databaseService =
@@ -36,27 +39,58 @@ class _CommandManagerState extends State<CommandManager> {
         break;
       case "round":
         {
-          databaseService.updateCommand('playerChoice', 'player1');
-        }
-        break;
-      case "playerChoice":
-        {
-          if (widget.gameData.activePlayer == widget.userData.name &&
-              questionSelected == false) {
-            databaseService.updateQuestion();
-            setState(() {
-              questionSelected = true;
-            });
+          if (widget.gameData.activePlayer == widget.userData.name) {
+            databaseService.updateCommand('playerChoice', 'player1');
           }
         }
         break;
+      case "playerChoice":
+        {}
+        break;
       case "attack":
         {
-          setState(() {
-            questionSelected = false;
-          });
-          databaseService.updateCommand('question', 'player1',
-              attacked: 'none');
+          if (widget.gameData.activePlayer == widget.userData.name) {
+            databaseService.updateCommand('question', 'player1',
+                attacked: 'none');
+            databaseService.updateQuestion();
+            print('how are uuuuuuuuuu');
+          }
+        }
+        break;
+      case "question":
+        {
+          if (widget.gameData.activePlayer == widget.userData.name)
+            databaseService.updateCommand('showAnswer', 'player1',
+                attacked: 'none');
+        }
+        break;
+      case "showAnswer":
+        {
+          print('here');
+          if (widget.gameData.activePlayer == widget.userData.name)
+            databaseService.updateCommand('returnFromQuestion', 'player1',
+                attacked: 'none');
+        }
+        break;
+      case "returnFromQuestion":
+        {
+          if (widget.gameData.activePlayer == widget.userData.name) {
+            print('hiii');
+            databaseService.resetAnswers();
+            if (widget.gameData.activePlayer == widget.gameData.player1) {
+              print('hiii2');
+              databaseService.updateCommand('playerChoice', 'player2',
+                  attacked: 'none');
+            } else if (widget.gameData.activePlayer ==
+                widget.gameData.player2) {
+              print('hiii3');
+              databaseService.updateCommand('playerChoice', 'player3',
+                  attacked: 'none');
+            } else if (widget.gameData.activePlayer ==
+                widget.gameData.player3) {
+              databaseService.updateCommand('round', 'player1');
+            }
+          }
         }
         break;
       default:

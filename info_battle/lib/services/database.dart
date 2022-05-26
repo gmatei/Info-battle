@@ -48,16 +48,19 @@ class DatabaseService {
 
   GameData _gameDataFromSnapshot(DocumentSnapshot snapshot) {
     return GameData(
-        gameId: snapshot.get('gameId'),
-        nrConnectedUsers: snapshot.get('nrConnectedUsers'),
-        command: snapshot.get('command'),
-        activePlayer: snapshot.get('activePlayer'),
-        currentRound: snapshot.get('currentRound'),
-        player1: snapshot.get('player1'),
-        player2: snapshot.get('player2'),
-        player3: snapshot.get('player3'),
-        attackedPlayer: snapshot.get('attacked'),
-        currentQuestion: {...snapshot.get('currentQuestion')});
+      gameId: snapshot.get('gameId'),
+      nrConnectedUsers: snapshot.get('nrConnectedUsers'),
+      command: snapshot.get('command'),
+      activePlayer: snapshot.get('activePlayer'),
+      currentRound: snapshot.get('currentRound'),
+      player1: snapshot.get('player1'),
+      player2: snapshot.get('player2'),
+      player3: snapshot.get('player3'),
+      attackedPlayer: snapshot.get('attacked'),
+      currentQuestion: {...snapshot.get('currentQuestion')},
+      activeAnswer: snapshot.get('activePlayerAnswer'),
+      attackedAnswer: snapshot.get('attackedPlayerAnswer'),
+    );
   }
 
   //get profile stream
@@ -85,10 +88,12 @@ class DatabaseService {
         'option3': question.option3,
         'option4': question.option4
       };
-
-      await gameCollection.doc(gameid).update({
-        'currentQuestion': questionMap,
+      Timer(Duration(seconds: 5), () async {
+        await gameCollection.doc(gameid).update({
+          'currentQuestion': questionMap,
+        });
       });
+
       return;
     });
   }
@@ -187,7 +192,9 @@ class DatabaseService {
       'player2': 'none',
       'player3': 'none',
       'attacked': 'none',
-      'currentQuestion': currentQuestion
+      'currentQuestion': currentQuestion,
+      'activePlayerAnswer': 'none',
+      'attackedPlayerAnswer': 'none'
     });
   }
 
@@ -350,9 +357,25 @@ class DatabaseService {
           timeValue = 7;
         }
         break;
-      default:
+      case 'playerChoice':
+        {
+          timeValue = 8;
+        }
+        break;
+      case 'attack':
         {
           timeValue = 3;
+        }
+        break;
+      case 'showAnswer':
+        {
+          timeValue = 22;
+        }
+        break;
+
+      default:
+        {
+          timeValue = 5;
         }
         break;
     }
@@ -375,5 +398,24 @@ class DatabaseService {
         });
       });
     }
+  }
+
+  Future setActiveAnswer(String answer) async {
+    return await gameCollection.doc(gameid).update({
+      'activePlayerAnswer': answer,
+    });
+  }
+
+  Future setAttackedAnswer(String answer) async {
+    return await gameCollection.doc(gameid).update({
+      'attackedPlayerAnswer': answer,
+    });
+  }
+
+  void resetAnswers() {
+    gameCollection.doc(gameid).update({
+      'activePlayerAnswer': 'none',
+      'attackedPlayerAnswer': 'none',
+    });
   }
 }

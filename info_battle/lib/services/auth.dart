@@ -40,7 +40,7 @@ class AuthService {
       //create a new document for the user with the uid
       await DatabaseService(uid: user.uid).updateUserData(
           user.email.split('@')[0],
-          'https://www.pikpng.com/pngl/m/238-2387180_avatar-profile-png-icon-avatar-gamer-png-clipart.png',
+          'https://firebasestorage.googleapis.com/v0/b/info-battle.appspot.com/o/images%2Fdefault.png?alt=media&token=3ad928ef-cd0c-47fe-a808-25f2ec0c2ced',
           user.email);
 
       return _appUserFromUser(user);

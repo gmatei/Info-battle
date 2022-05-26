@@ -179,6 +179,24 @@ class _AlertDialogManagerState extends State<AlertDialogManager> {
         {}
         break;
 
+      case 'showAnswer':
+        {}
+        break;
+
+      case 'returnFromQuestion':
+        {
+          return AlertDialog(
+            title: Text(widget.gameData.command),
+            content: AnimatedTextKit(
+              animatedTexts: [
+                WavyAnimatedText("Some stats were updated i guess")
+              ],
+            ),
+            actions: [],
+          );
+        }
+        break;
+
       default:
         {
           return AlertDialog(
