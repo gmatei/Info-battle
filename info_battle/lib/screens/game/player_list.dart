@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:info_battle/models/game_data.dart';
 import 'package:info_battle/models/game_player.dart';
 import 'package:info_battle/models/user_data.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,9 @@ import 'package:provider/provider.dart';
 import 'player_widget.dart';
 
 class PlayerList extends StatefulWidget {
-  const PlayerList({Key? key}) : super(key: key);
+  const PlayerList(this.gameData, {Key? key}) : super(key: key);
+
+  final GameData gameData;
 
   @override
   State<PlayerList> createState() => _PlayerListState();
@@ -26,7 +29,7 @@ class _PlayerListState extends State<PlayerList> {
       physics: BouncingScrollPhysics(),
       itemCount: players.length,
       itemBuilder: (context, index) {
-        return PlayerWidget(player: players[index]);
+        return PlayerWidget(widget.gameData, player: players[index]);
       },
     );
   }

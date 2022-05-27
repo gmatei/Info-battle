@@ -16,6 +16,11 @@ class GameData {
   final Map<String, String> currentQuestion;
   final String activeAnswer;
   final String attackedAnswer;
+  final int player1Score;
+  final int player2Score;
+  final int player3Score;
+  final String activeUpdate;
+  final String attackedUpdate;
 
   const GameData(
       {this.gameId,
@@ -29,5 +34,10 @@ class GameData {
       this.attackedPlayer,
       this.currentQuestion,
       this.activeAnswer,
-      this.attackedAnswer});
+      this.attackedAnswer,
+      this.player1Score,
+      this.player2Score,
+      this.player3Score,
+      this.activeUpdate,
+      this.attackedUpdate});
 }

@@ -1,5 +1,5 @@
 //@dart=2.9
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures
 
 import 'dart:async';
 import 'dart:io';
@@ -11,6 +11,7 @@ import 'package:info_battle/models/game_player.dart';
 import 'package:info_battle/models/question.dart';
 import 'package:info_battle/models/questionset.dart';
 import 'package:info_battle/models/user_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DatabaseService {
   final String uid;
@@ -60,6 +61,11 @@ class DatabaseService {
       currentQuestion: {...snapshot.get('currentQuestion')},
       activeAnswer: snapshot.get('activePlayerAnswer'),
       attackedAnswer: snapshot.get('attackedPlayerAnswer'),
+      player1Score: snapshot.get('player1Score'),
+      player2Score: snapshot.get('player2Score'),
+      player3Score: snapshot.get('player3Score'),
+      activeUpdate: snapshot.get('activeUpdate'),
+      attackedUpdate: snapshot.get('attackedUpdate'),
     );
   }
 
@@ -86,14 +92,13 @@ class DatabaseService {
         'option1': question.option1,
         'option2': question.option2,
         'option3': question.option3,
-        'option4': question.option4
+        'option4': question.option4,
+        'correctAnswer': question.correctAnswer
       };
-      Timer(Duration(seconds: 5), () async {
-        await gameCollection.doc(gameid).update({
-          'currentQuestion': questionMap,
-        });
-      });
 
+      await gameCollection.doc(gameid).update({
+        'currentQuestion': questionMap,
+      });
       return;
     });
   }
@@ -114,6 +119,7 @@ class DatabaseService {
       option2: question['option2'],
       option3: question['option3'],
       option4: question['option4'],
+      correctAnswer: question['correctAnswer'],
     );
   }
 
@@ -125,6 +131,7 @@ class DatabaseService {
         option2: doc.get('option2') ?? '',
         option3: doc.get('option3') ?? '',
         option4: doc.get('option4') ?? '',
+        correctAnswer: doc.get('correctAnswer') ?? '',
       );
     }).toList();
 
@@ -179,7 +186,8 @@ class DatabaseService {
       'option1': 'option1',
       'option2': 'option2',
       'option3': 'option3',
-      'option4': 'option4'
+      'option4': 'option4',
+      'correctAnswer': 'none'
     };
 
     return await gameCollection.doc(gameCode).set({
@@ -187,14 +195,19 @@ class DatabaseService {
       'nrConnectedUsers': 0,
       'command': 'init',
       'activePlayer': 'none',
-      'currentRound': 1,
+      'currentRound': 0,
       'player1': 'none',
       'player2': 'none',
       'player3': 'none',
       'attacked': 'none',
       'currentQuestion': currentQuestion,
       'activePlayerAnswer': 'none',
-      'attackedPlayerAnswer': 'none'
+      'attackedPlayerAnswer': 'none',
+      'player1Score': 0,
+      'player2Score': 0,
+      'player3Score': 0,
+      'activeUpdate': 'none',
+      'attackedUpdate': 'none'
     });
   }
 
@@ -206,59 +219,28 @@ class DatabaseService {
     };
 
     int nrConnected;
-    String player1, player2, player3;
 
     await gameCollection.doc(gameCode).get().then((DocumentSnapshot ds) {
       nrConnected = ds.get('nrConnectedUsers');
     });
 
-    await gameCollection.doc(gameCode).get().then((DocumentSnapshot ds) {
-      player1 = ds.get('player1');
-    });
-
-    await gameCollection.doc(gameCode).get().then((DocumentSnapshot ds) {
-      player2 = ds.get('player2');
-    });
-
-    await gameCollection.doc(gameCode).get().then((DocumentSnapshot ds) {
-      player3 = ds.get('player3');
-    });
-
     if (nrConnected == 0) {
       await gameCollection.doc(gameCode).update({
-        'gameId': gameCode,
         'nrConnectedUsers': nrConnected + 1,
-        'command': 'init',
-        'activePlayer': 'none',
-        'currentRound': 1,
         'player1': userData.name,
-        'player2': player2,
-        'player3': player3,
       });
     }
 
     if (nrConnected == 1) {
       await gameCollection.doc(gameCode).update({
-        'gameId': gameCode,
         'nrConnectedUsers': nrConnected + 1,
-        'command': 'init',
-        'activePlayer': 'none',
-        'currentRound': 1,
-        'player1': player1,
         'player2': userData.name,
-        'player3': player3,
       });
     }
 
     if (nrConnected == 2) {
       await gameCollection.doc(gameCode).update({
-        'gameId': gameCode,
         'nrConnectedUsers': nrConnected + 1,
-        'command': 'init',
-        'activePlayer': 'none',
-        'currentRound': 1,
-        'player1': player1,
-        'player2': player2,
         'player3': userData.name,
       });
     }
@@ -286,13 +268,24 @@ class DatabaseService {
 
       currentEntries.listen((listOfQuestions) async {
         for (Question question in listOfQuestions) {
+          List<String> qAnswers = [
+            question.option1,
+            question.option2,
+            question.option3,
+            question.option4
+          ];
+
+          qAnswers.shuffle();
+
           Map<String, String> questionMap = {
             "qText": question.qText,
-            "option1": question.option1,
-            "option2": question.option2,
-            "option3": question.option3,
-            "option4": question.option4,
+            "option1": qAnswers[0],
+            "option2": qAnswers[1],
+            "option3": qAnswers[2],
+            "option4": qAnswers[3],
+            "correctAnswer": question.correctAnswer,
           };
+
           await gameCollection
               .doc(gameid)
               .collection("GameQuestions")
@@ -310,6 +303,7 @@ class DatabaseService {
         option2: doc.get('option2') ?? '',
         option3: doc.get('option3') ?? '',
         option4: doc.get('option4') ?? '',
+        correctAnswer: doc.get('correctAnswer') ?? '',
       );
     }).toList();
   }
@@ -359,17 +353,22 @@ class DatabaseService {
         break;
       case 'playerChoice':
         {
-          timeValue = 8;
+          timeValue = 6;
         }
         break;
       case 'attack':
         {
-          timeValue = 3;
+          timeValue = 1;
         }
         break;
       case 'showAnswer':
         {
           timeValue = 22;
+        }
+        break;
+      case 'returnFromQuestion':
+        {
+          timeValue = 4;
         }
         break;
 
@@ -380,23 +379,47 @@ class DatabaseService {
         break;
     }
 
+    int currentRound;
+    await gameCollection.doc(gameid).get().then((DocumentSnapshot ds) {
+      currentRound = ds.get('currentRound');
+    });
+    if (command == 'round') currentRound++;
+
     if (attacked != 'none') {
       Timer(Duration(seconds: timeValue), () async {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('showAns', false);
         await gameCollection.doc(gameid).update({
           'command': command,
           'activePlayer': activePlayer,
-          'currentRound': 1,
+          'currentRound': currentRound,
           'attacked': attacked
         });
       });
     } else {
-      Timer(Duration(seconds: timeValue), () async {
-        await gameCollection.doc(gameid).update({
-          'command': command,
-          'activePlayer': activePlayer,
-          'currentRound': 1,
+      if (command == 'showAnswer') {
+        Timer(Duration(seconds: timeValue), () async {
+          final prefs = await SharedPreferences.getInstance();
+
+          if (prefs.getBool('showAns') == false) {
+            await prefs.setBool('showAns', true);
+
+            await gameCollection.doc(gameid).update({
+              'command': command,
+              'activePlayer': activePlayer,
+              'currentRound': currentRound,
+            });
+          }
         });
-      });
+      } else {
+        Timer(Duration(seconds: timeValue), () async {
+          await gameCollection.doc(gameid).update({
+            'command': command,
+            'activePlayer': activePlayer,
+            'currentRound': currentRound,
+          });
+        });
+      }
     }
   }
 
@@ -412,10 +435,153 @@ class DatabaseService {
     });
   }
 
-  void resetAnswers() {
-    gameCollection.doc(gameid).update({
+  Future resetAnswers() async {
+    String activePlayerAnswer,
+        attackedPlayerAnswer,
+        correctAnswer,
+        activePlayer,
+        attackedPlayer;
+
+    String player1;
+    int player1Score;
+    String player2;
+    int player2Score;
+    String player3;
+    int player3Score;
+
+    await gameCollection.doc(gameid).get().then((DocumentSnapshot ds) {
+      activePlayerAnswer = ds.get('activePlayerAnswer');
+      attackedPlayerAnswer = ds.get('attackedPlayerAnswer');
+      correctAnswer = ds.get('currentQuestion.correctAnswer');
+      activePlayer = ds.get('activePlayer');
+      attackedPlayer = ds.get('attacked');
+      player1 = ds.get('player1');
+      player2 = ds.get('player2');
+      player3 = ds.get('player3');
+      player1Score = ds.get('player1Score');
+      player2Score = ds.get('player2Score');
+      player3Score = ds.get('player3Score');
+    });
+
+    if (player1 == activePlayer)
+      activePlayer = 'player1';
+    else if (player2 == activePlayer)
+      activePlayer = 'player2';
+    else if (player3 == activePlayer) activePlayer = 'player3';
+    if (player1 == attackedPlayer)
+      attackedPlayer = 'player1';
+    else if (player2 == attackedPlayer)
+      attackedPlayer = 'player2';
+    else if (player3 == attackedPlayer) attackedPlayer = 'player3';
+
+    if (activePlayerAnswer == correctAnswer &&
+        attackedPlayerAnswer == correctAnswer) {
+      if (activePlayer == 'player1') {
+        await gameCollection.doc(gameid).update({
+          'player1Score': player1Score + 100,
+          'activeUpdate': '$player1 gained 100 points',
+        });
+      } else if (activePlayer == 'player2') {
+        await gameCollection.doc(gameid).update({
+          'player2Score': player2Score + 100,
+          'activeUpdate': '$player2 gained 100 points',
+        });
+      } else if (activePlayer == 'player3') {
+        await gameCollection.doc(gameid).update({
+          'player3Score': player3Score + 100,
+          'activeUpdate': '$player3 gained 100 points',
+        });
+      }
+      if (attackedPlayer == 'player1') {
+        await gameCollection.doc(gameid).update({
+          'player1Score': player1Score + 100,
+          'attackedUpdate': '$player1 gained 100 points',
+        });
+      } else if (attackedPlayer == 'player2') {
+        await gameCollection.doc(gameid).update({
+          'player2Score': player2Score + 100,
+          'attackedUpdate': '$player2 gained 100 points',
+        });
+      } else if (attackedPlayer == 'player3') {
+        await gameCollection.doc(gameid).update({
+          'player3Score': player3Score + 100,
+          'attackedUpdate': '$player3 gained 100 points',
+        });
+      }
+    } else if (activePlayerAnswer == correctAnswer &&
+        attackedPlayerAnswer != correctAnswer) {
+      if (activePlayer == 'player1') {
+        await gameCollection.doc(gameid).update({
+          'player1Score': player1Score + 300,
+          'activeUpdate': '$player1 gained 300 points',
+        });
+      } else if (activePlayer == 'player2') {
+        await gameCollection.doc(gameid).update({
+          'player2Score': player2Score + 300,
+          'activeUpdate': '$player2 gained 300 points',
+        });
+      } else if (activePlayer == 'player3') {
+        await gameCollection.doc(gameid).update({
+          'player3Score': player3Score + 300,
+          'activeUpdate': '$player3 gained 300 points',
+        });
+      }
+      if (attackedPlayer == 'player1') {
+        await gameCollection.doc(gameid).update({
+          'player1Score': player1Score - 100,
+          'attackedUpdate': '$player1 lost 100 points',
+        });
+      } else if (attackedPlayer == 'player2') {
+        await gameCollection.doc(gameid).update({
+          'player2Score': player2Score - 100,
+          'attackedUpdate': '$player2 lost 100 points',
+        });
+      } else if (attackedPlayer == 'player3') {
+        await gameCollection.doc(gameid).update({
+          'player3Score': player3Score - 100,
+          'attackedUpdate': '$player3 lost 100 points',
+        });
+      }
+    } else if (activePlayerAnswer != correctAnswer &&
+        attackedPlayerAnswer == correctAnswer) {
+      if (activePlayer == 'player1') {
+        await gameCollection.doc(gameid).update({
+          'player1Score': player1Score - 100,
+          'activeUpdate': '$player1 lost 100 points',
+        });
+      } else if (activePlayer == 'player2') {
+        await gameCollection.doc(gameid).update({
+          'player2Score': player2Score - 100,
+          'activeUpdate': '$player2 lost 100 points',
+        });
+      } else if (activePlayer == 'player3') {
+        await gameCollection.doc(gameid).update({
+          'player3Score': player3Score - 100,
+          'activeUpdate': '$player3 lost 100 points',
+        });
+      }
+      if (attackedPlayer == 'player1') {
+        await gameCollection.doc(gameid).update({
+          'player1Score': player1Score + 300,
+          'attackedUpdate': '$player1 gained 300 points',
+        });
+      } else if (attackedPlayer == 'player2') {
+        await gameCollection.doc(gameid).update({
+          'player2Score': player2Score + 300,
+          'attackedUpdate': '$player2 gained 300 points',
+        });
+      } else if (attackedPlayer == 'player3') {
+        await gameCollection.doc(gameid).update({
+          'player3Score': player3Score + 300,
+          'attackedUpdate': '$player3 gained 300 points',
+        });
+      }
+    }
+
+    await gameCollection.doc(gameid).update({
       'activePlayerAnswer': 'none',
       'attackedPlayerAnswer': 'none',
+      'currentQuestion.qText': 'none'
     });
   }
 }

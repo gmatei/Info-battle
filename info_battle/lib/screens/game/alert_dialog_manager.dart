@@ -189,7 +189,8 @@ class _AlertDialogManagerState extends State<AlertDialogManager> {
             title: Text(widget.gameData.command),
             content: AnimatedTextKit(
               animatedTexts: [
-                WavyAnimatedText("Some stats were updated i guess")
+                WavyAnimatedText(widget.gameData.activeUpdate),
+                WavyAnimatedText(widget.gameData.attackedUpdate),
               ],
             ),
             actions: [],

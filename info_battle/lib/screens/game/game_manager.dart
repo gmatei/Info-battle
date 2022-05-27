@@ -17,6 +17,7 @@ import 'package:provider/provider.dart';
 
 import '../../services/database.dart';
 import 'command_manager.dart';
+import 'game_over.dart';
 import 'player_list.dart';
 
 class GameManager extends StatefulWidget {
@@ -46,36 +47,40 @@ class _GameManagerState extends State<GameManager> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 GameData gameData = snapshot.data;
-                if (gameData.command != 'question' &&
-                    gameData.command != 'showAnswer') {
+                if (gameData.currentRound < 3) {
                   return Scaffold(
                       appBar: AppBar(
+                        automaticallyImplyLeading: false,
                         backgroundColor: Colors.brown[400],
                         title: Text('Game'),
                         elevation: 10.0,
                       ),
                       body: Column(
                         children: [
-                          PlayerList(),
-                          AlertDialogManager(gameData, widget.userData),
-                          widget.gameData.activePlayer == widget.userData.name
+                          gameData.command != 'question' &&
+                                  gameData.command != 'showAnswer'
+                              ? PlayerList(gameData)
+                              : SizedBox(width: 0.0, height: 0.0),
+                          gameData.command != 'question' &&
+                                  gameData.command != 'showAnswer'
+                              ? AlertDialogManager(gameData, widget.userData)
+                              : SizedBox(width: 0.0, height: 0.0),
+                          gameData.command == 'question' ||
+                                  gameData.command == 'showAnswer'
+                              ? QuestionScreen(gameData, widget.userData)
+                              : SizedBox(
+                                  width: 0.0,
+                                  height: 0.0,
+                                ),
+                          widget.gameData.activePlayer ==
+                                      widget.userData.name ||
+                                  widget.gameData.command == 'init'
                               ? CommandManager(widget.userData, gameData)
                               : SizedBox(width: 0.0, height: 0.0),
                         ],
                       ));
                 } else {
-                  return Scaffold(
-                      appBar: AppBar(
-                        backgroundColor: Colors.brown[400],
-                        title: Text('Question'),
-                        elevation: 10.0,
-                      ),
-                      body: Column(
-                        children: [
-                          QuestionScreen(gameData, widget.userData),
-                          CommandManager(widget.userData, gameData),
-                        ],
-                      ));
+                  return GameOver();
                 }
               } else {
                 return Loading();

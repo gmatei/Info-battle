@@ -31,6 +31,7 @@ class _AddQuestionState extends State<AddQuestion> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.brown[400],
         title: Text('Add Quiz Question'),
         elevation: 10.0,
@@ -183,7 +184,8 @@ class _AddQuestionState extends State<AddQuestion> {
         "option1": option1,
         "option2": option2,
         "option3": option3,
-        "option4": option4
+        "option4": option4,
+        'correctAnswer': option1
       };
 
       databaseService.addQuestionData(questionMap, widget.quizId).then((value) {
@@ -192,6 +194,7 @@ class _AddQuestionState extends State<AddQuestion> {
         option2 = "";
         option3 = "";
         option4 = "";
+
         setState(() {
           isLoading = false;
         });

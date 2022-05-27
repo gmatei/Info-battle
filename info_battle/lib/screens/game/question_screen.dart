@@ -44,6 +44,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
               questionData.option3,
               questionData.option4
             ];
+
             if (questionData.qText == 'none') {
               return Loading();
             } else {
@@ -62,7 +63,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         style: OutlinedButton.styleFrom(
                           side: widget.gameData.command == 'showAnswer' &&
                                   options[i] ==
-                                      widget.gameData.currentQuestion['option1']
+                                      widget.gameData
+                                          .currentQuestion['correctAnswer']
                               ? BorderSide(width: 5.0, color: Colors.yellow)
                               : BorderSide(width: 1.0, color: Colors.black),
                           backgroundColor: isActivePlayer

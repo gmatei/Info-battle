@@ -40,7 +40,8 @@ class _CommandManagerState extends State<CommandManager> {
       case "round":
         {
           if (widget.gameData.activePlayer == widget.userData.name) {
-            databaseService.updateCommand('playerChoice', 'player1');
+            databaseService.updateCommand(
+                'playerChoice', widget.gameData.activePlayer);
           }
         }
         break;
@@ -49,9 +50,12 @@ class _CommandManagerState extends State<CommandManager> {
         break;
       case "attack":
         {
-          if (widget.gameData.activePlayer == widget.userData.name) {
-            databaseService.updateCommand('question', 'player1',
+          if (widget.gameData.activePlayer == widget.userData.name &&
+              widget.gameData.currentQuestion['qText'] == 'none') {
+            databaseService.updateCommand(
+                'question', widget.gameData.activePlayer,
                 attacked: 'none');
+
             databaseService.updateQuestion();
             print('how are uuuuuuuuuu');
           }
@@ -60,23 +64,28 @@ class _CommandManagerState extends State<CommandManager> {
       case "question":
         {
           if (widget.gameData.activePlayer == widget.userData.name)
-            databaseService.updateCommand('showAnswer', 'player1',
+            databaseService.updateCommand(
+                'showAnswer', widget.gameData.activePlayer,
                 attacked: 'none');
         }
         break;
       case "showAnswer":
         {
           print('here');
-          if (widget.gameData.activePlayer == widget.userData.name)
-            databaseService.updateCommand('returnFromQuestion', 'player1',
-                attacked: 'none');
+          if (widget.gameData.currentQuestion['qText'] != 'none') {
+            if (widget.gameData.activePlayer == widget.userData.name) {
+              databaseService.resetAnswers();
+              databaseService.updateCommand(
+                  'returnFromQuestion', widget.gameData.activePlayer,
+                  attacked: 'none');
+            }
+          }
         }
         break;
       case "returnFromQuestion":
         {
           if (widget.gameData.activePlayer == widget.userData.name) {
             print('hiii');
-            databaseService.resetAnswers();
             if (widget.gameData.activePlayer == widget.gameData.player1) {
               print('hiii2');
               databaseService.updateCommand('playerChoice', 'player2',
