@@ -368,7 +368,7 @@ class DatabaseService {
         break;
       case 'returnFromQuestion':
         {
-          timeValue = 4;
+          timeValue = 2;
         }
         break;
 
@@ -389,6 +389,7 @@ class DatabaseService {
       Timer(Duration(seconds: timeValue), () async {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setBool('showAns', false);
+        await prefs.setBool('updatedScore', false);
         await gameCollection.doc(gameid).update({
           'command': command,
           'activePlayer': activePlayer,
@@ -436,152 +437,160 @@ class DatabaseService {
   }
 
   Future resetAnswers() async {
-    String activePlayerAnswer,
-        attackedPlayerAnswer,
-        correctAnswer,
-        activePlayer,
-        attackedPlayer;
+    Timer(Duration(seconds: 3), () async {
+      final prefs = await SharedPreferences.getInstance();
 
-    String player1;
-    int player1Score;
-    String player2;
-    int player2Score;
-    String player3;
-    int player3Score;
+      if (prefs.getBool('updatedScore') == false) {
+        await prefs.setBool('updatedScore', true);
 
-    await gameCollection.doc(gameid).get().then((DocumentSnapshot ds) {
-      activePlayerAnswer = ds.get('activePlayerAnswer');
-      attackedPlayerAnswer = ds.get('attackedPlayerAnswer');
-      correctAnswer = ds.get('currentQuestion.correctAnswer');
-      activePlayer = ds.get('activePlayer');
-      attackedPlayer = ds.get('attacked');
-      player1 = ds.get('player1');
-      player2 = ds.get('player2');
-      player3 = ds.get('player3');
-      player1Score = ds.get('player1Score');
-      player2Score = ds.get('player2Score');
-      player3Score = ds.get('player3Score');
-    });
+        String activePlayerAnswer,
+            attackedPlayerAnswer,
+            correctAnswer,
+            activePlayer,
+            attackedPlayer;
 
-    if (player1 == activePlayer)
-      activePlayer = 'player1';
-    else if (player2 == activePlayer)
-      activePlayer = 'player2';
-    else if (player3 == activePlayer) activePlayer = 'player3';
-    if (player1 == attackedPlayer)
-      attackedPlayer = 'player1';
-    else if (player2 == attackedPlayer)
-      attackedPlayer = 'player2';
-    else if (player3 == attackedPlayer) attackedPlayer = 'player3';
+        String player1;
+        int player1Score;
+        String player2;
+        int player2Score;
+        String player3;
+        int player3Score;
 
-    if (activePlayerAnswer == correctAnswer &&
-        attackedPlayerAnswer == correctAnswer) {
-      if (activePlayer == 'player1') {
-        await gameCollection.doc(gameid).update({
-          'player1Score': player1Score + 100,
-          'activeUpdate': '$player1 gained 100 points',
+        await gameCollection.doc(gameid).get().then((DocumentSnapshot ds) {
+          activePlayerAnswer = ds.get('activePlayerAnswer');
+          attackedPlayerAnswer = ds.get('attackedPlayerAnswer');
+          correctAnswer = ds.get('currentQuestion.correctAnswer');
+          activePlayer = ds.get('activePlayer');
+          attackedPlayer = ds.get('attacked');
+          player1 = ds.get('player1');
+          player2 = ds.get('player2');
+          player3 = ds.get('player3');
+          player1Score = ds.get('player1Score');
+          player2Score = ds.get('player2Score');
+          player3Score = ds.get('player3Score');
         });
-      } else if (activePlayer == 'player2') {
-        await gameCollection.doc(gameid).update({
-          'player2Score': player2Score + 100,
-          'activeUpdate': '$player2 gained 100 points',
-        });
-      } else if (activePlayer == 'player3') {
-        await gameCollection.doc(gameid).update({
-          'player3Score': player3Score + 100,
-          'activeUpdate': '$player3 gained 100 points',
-        });
-      }
-      if (attackedPlayer == 'player1') {
-        await gameCollection.doc(gameid).update({
-          'player1Score': player1Score + 100,
-          'attackedUpdate': '$player1 gained 100 points',
-        });
-      } else if (attackedPlayer == 'player2') {
-        await gameCollection.doc(gameid).update({
-          'player2Score': player2Score + 100,
-          'attackedUpdate': '$player2 gained 100 points',
-        });
-      } else if (attackedPlayer == 'player3') {
-        await gameCollection.doc(gameid).update({
-          'player3Score': player3Score + 100,
-          'attackedUpdate': '$player3 gained 100 points',
-        });
-      }
-    } else if (activePlayerAnswer == correctAnswer &&
-        attackedPlayerAnswer != correctAnswer) {
-      if (activePlayer == 'player1') {
-        await gameCollection.doc(gameid).update({
-          'player1Score': player1Score + 300,
-          'activeUpdate': '$player1 gained 300 points',
-        });
-      } else if (activePlayer == 'player2') {
-        await gameCollection.doc(gameid).update({
-          'player2Score': player2Score + 300,
-          'activeUpdate': '$player2 gained 300 points',
-        });
-      } else if (activePlayer == 'player3') {
-        await gameCollection.doc(gameid).update({
-          'player3Score': player3Score + 300,
-          'activeUpdate': '$player3 gained 300 points',
-        });
-      }
-      if (attackedPlayer == 'player1') {
-        await gameCollection.doc(gameid).update({
-          'player1Score': player1Score - 100,
-          'attackedUpdate': '$player1 lost 100 points',
-        });
-      } else if (attackedPlayer == 'player2') {
-        await gameCollection.doc(gameid).update({
-          'player2Score': player2Score - 100,
-          'attackedUpdate': '$player2 lost 100 points',
-        });
-      } else if (attackedPlayer == 'player3') {
-        await gameCollection.doc(gameid).update({
-          'player3Score': player3Score - 100,
-          'attackedUpdate': '$player3 lost 100 points',
-        });
-      }
-    } else if (activePlayerAnswer != correctAnswer &&
-        attackedPlayerAnswer == correctAnswer) {
-      if (activePlayer == 'player1') {
-        await gameCollection.doc(gameid).update({
-          'player1Score': player1Score - 100,
-          'activeUpdate': '$player1 lost 100 points',
-        });
-      } else if (activePlayer == 'player2') {
-        await gameCollection.doc(gameid).update({
-          'player2Score': player2Score - 100,
-          'activeUpdate': '$player2 lost 100 points',
-        });
-      } else if (activePlayer == 'player3') {
-        await gameCollection.doc(gameid).update({
-          'player3Score': player3Score - 100,
-          'activeUpdate': '$player3 lost 100 points',
-        });
-      }
-      if (attackedPlayer == 'player1') {
-        await gameCollection.doc(gameid).update({
-          'player1Score': player1Score + 300,
-          'attackedUpdate': '$player1 gained 300 points',
-        });
-      } else if (attackedPlayer == 'player2') {
-        await gameCollection.doc(gameid).update({
-          'player2Score': player2Score + 300,
-          'attackedUpdate': '$player2 gained 300 points',
-        });
-      } else if (attackedPlayer == 'player3') {
-        await gameCollection.doc(gameid).update({
-          'player3Score': player3Score + 300,
-          'attackedUpdate': '$player3 gained 300 points',
-        });
-      }
-    }
 
-    await gameCollection.doc(gameid).update({
-      'activePlayerAnswer': 'none',
-      'attackedPlayerAnswer': 'none',
-      'currentQuestion.qText': 'none'
+        if (player1 == activePlayer)
+          activePlayer = 'player1';
+        else if (player2 == activePlayer)
+          activePlayer = 'player2';
+        else if (player3 == activePlayer) activePlayer = 'player3';
+        if (player1 == attackedPlayer)
+          attackedPlayer = 'player1';
+        else if (player2 == attackedPlayer)
+          attackedPlayer = 'player2';
+        else if (player3 == attackedPlayer) attackedPlayer = 'player3';
+
+        if (activePlayerAnswer == correctAnswer &&
+            attackedPlayerAnswer == correctAnswer) {
+          if (activePlayer == 'player1') {
+            await gameCollection.doc(gameid).update({
+              'player1Score': player1Score + 100,
+              'activeUpdate': '$player1 gained 100 points',
+            });
+          } else if (activePlayer == 'player2') {
+            await gameCollection.doc(gameid).update({
+              'player2Score': player2Score + 100,
+              'activeUpdate': '$player2 gained 100 points',
+            });
+          } else if (activePlayer == 'player3') {
+            await gameCollection.doc(gameid).update({
+              'player3Score': player3Score + 100,
+              'activeUpdate': '$player3 gained 100 points',
+            });
+          }
+          if (attackedPlayer == 'player1') {
+            await gameCollection.doc(gameid).update({
+              'player1Score': player1Score + 100,
+              'attackedUpdate': '$player1 gained 100 points',
+            });
+          } else if (attackedPlayer == 'player2') {
+            await gameCollection.doc(gameid).update({
+              'player2Score': player2Score + 100,
+              'attackedUpdate': '$player2 gained 100 points',
+            });
+          } else if (attackedPlayer == 'player3') {
+            await gameCollection.doc(gameid).update({
+              'player3Score': player3Score + 100,
+              'attackedUpdate': '$player3 gained 100 points',
+            });
+          }
+        } else if (activePlayerAnswer == correctAnswer &&
+            attackedPlayerAnswer != correctAnswer) {
+          if (activePlayer == 'player1') {
+            await gameCollection.doc(gameid).update({
+              'player1Score': player1Score + 300,
+              'activeUpdate': '$player1 gained 300 points',
+            });
+          } else if (activePlayer == 'player2') {
+            await gameCollection.doc(gameid).update({
+              'player2Score': player2Score + 300,
+              'activeUpdate': '$player2 gained 300 points',
+            });
+          } else if (activePlayer == 'player3') {
+            await gameCollection.doc(gameid).update({
+              'player3Score': player3Score + 300,
+              'activeUpdate': '$player3 gained 300 points',
+            });
+          }
+          if (attackedPlayer == 'player1') {
+            await gameCollection.doc(gameid).update({
+              'player1Score': player1Score - 100,
+              'attackedUpdate': '$player1 lost 100 points',
+            });
+          } else if (attackedPlayer == 'player2') {
+            await gameCollection.doc(gameid).update({
+              'player2Score': player2Score - 100,
+              'attackedUpdate': '$player2 lost 100 points',
+            });
+          } else if (attackedPlayer == 'player3') {
+            await gameCollection.doc(gameid).update({
+              'player3Score': player3Score - 100,
+              'attackedUpdate': '$player3 lost 100 points',
+            });
+          }
+        } else if (activePlayerAnswer != correctAnswer &&
+            attackedPlayerAnswer == correctAnswer) {
+          if (activePlayer == 'player1') {
+            await gameCollection.doc(gameid).update({
+              'player1Score': player1Score - 100,
+              'activeUpdate': '$player1 lost 100 points',
+            });
+          } else if (activePlayer == 'player2') {
+            await gameCollection.doc(gameid).update({
+              'player2Score': player2Score - 100,
+              'activeUpdate': '$player2 lost 100 points',
+            });
+          } else if (activePlayer == 'player3') {
+            await gameCollection.doc(gameid).update({
+              'player3Score': player3Score - 100,
+              'activeUpdate': '$player3 lost 100 points',
+            });
+          }
+          if (attackedPlayer == 'player1') {
+            await gameCollection.doc(gameid).update({
+              'player1Score': player1Score + 300,
+              'attackedUpdate': '$player1 gained 300 points',
+            });
+          } else if (attackedPlayer == 'player2') {
+            await gameCollection.doc(gameid).update({
+              'player2Score': player2Score + 300,
+              'attackedUpdate': '$player2 gained 300 points',
+            });
+          } else if (attackedPlayer == 'player3') {
+            await gameCollection.doc(gameid).update({
+              'player3Score': player3Score + 300,
+              'attackedUpdate': '$player3 gained 300 points',
+            });
+          }
+        }
+
+        await gameCollection.doc(gameid).update({
+          'activePlayerAnswer': 'none',
+          'attackedPlayerAnswer': 'none',
+          'currentQuestion.qText': 'none'
+        });
+      }
     });
   }
 }

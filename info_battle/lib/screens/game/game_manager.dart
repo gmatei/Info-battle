@@ -80,7 +80,7 @@ class _GameManagerState extends State<GameManager> {
                         ],
                       ));
                 } else {
-                  return GameOver();
+                  return GameOver(gameData);
                 }
               } else {
                 return Loading();

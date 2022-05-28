@@ -1,4 +1,6 @@
 //@dart=2.9
+// ignore_for_file: prefer_const_constructors
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -189,8 +191,10 @@ class _AlertDialogManagerState extends State<AlertDialogManager> {
             title: Text(widget.gameData.command),
             content: AnimatedTextKit(
               animatedTexts: [
-                WavyAnimatedText(widget.gameData.activeUpdate),
-                WavyAnimatedText(widget.gameData.attackedUpdate),
+                WavyAnimatedText(widget.gameData.activeUpdate,
+                    speed: Duration(milliseconds: 100)),
+                WavyAnimatedText(widget.gameData.attackedUpdate,
+                    speed: Duration(milliseconds: 100)),
               ],
             ),
             actions: [],
