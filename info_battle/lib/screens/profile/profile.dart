@@ -2,18 +2,21 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:info_battle/models/app_user.dart';
 import 'package:info_battle/models/user_data.dart';
 import 'package:info_battle/screens/profile/edit_profile.dart';
 import 'package:info_battle/services/database.dart';
 import 'package:info_battle/utils/loading.dart';
 import 'package:provider/provider.dart';
+import '../../utils/constants.dart';
 import 'profile_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -35,18 +38,26 @@ class _ProfileState extends State<Profile> {
           if (snapshot.hasData) {
             UserData userData = snapshot.data;
             return Scaffold(
-              backgroundColor: Colors.brown[50],
+              resizeToAvoidBottomInset: false,
+              extendBodyBehindAppBar: true,
               appBar: AppBar(
+                elevation: 10.0,
+                backgroundColor: buttonIdleColor,
                 title: Row(
                   children: <Widget>[
                     TextButton.icon(
                       icon: Icon(
                         Icons.home_rounded,
-                        size: 40.0,
+                        color: textColor,
+                        size: deviceWidth / 12,
                       ),
                       label: Text(
                         'Home',
-                        style: TextStyle(fontSize: 20),
+                        style: GoogleFonts.balooDa2(
+                          color: textColor,
+                          fontSize: deviceWidth / 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       onPressed: () {
                         widget.toggleView();
@@ -54,23 +65,34 @@ class _ProfileState extends State<Profile> {
                     ),
                   ],
                 ),
-                backgroundColor: Colors.brown[400],
-                elevation: 0.0,
               ),
-              body: ListView(
-                physics: BouncingScrollPhysics(),
-                children: [
-                  ProfileWidget(
-                    imagePath: userData.imagePath,
-                    onClicked: () async {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => EditProfile()),
-                      );
-                    },
+              body: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    alignment: Alignment.topCenter,
+                    fit: BoxFit.fill,
+                    image: homeImage,
                   ),
-                  const SizedBox(height: 24),
-                  buildName(userData),
-                ],
+                ),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                  child: ListView(
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      ProfileWidget(
+                        imagePath: userData.imagePath,
+                        onClicked: () async {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => EditProfile()),
+                          );
+                        },
+                      ),
+                      SizedBox(height: deviceHeight / 35),
+                      buildName(userData),
+                    ],
+                  ),
+                ),
               ),
             );
           } else {
@@ -84,12 +106,20 @@ Widget buildName(userData) => Column(
       children: [
         Text(
           userData.name,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+          style: GoogleFonts.balooDa2(
+              fontWeight: FontWeight.bold,
+              fontSize: deviceWidth / 13,
+              color: textColor),
         ),
-        const SizedBox(height: 4),
+        SizedBox(
+          height: deviceHeight / 200,
+        ),
         Text(
           userData.email,
-          style: TextStyle(color: Colors.grey, fontSize: 17),
+          style: GoogleFonts.balooDa2(
+              color: Color.fromARGB(255, 170, 194, 200),
+              fontSize: 17,
+              fontStyle: FontStyle.italic),
         )
       ],
     );

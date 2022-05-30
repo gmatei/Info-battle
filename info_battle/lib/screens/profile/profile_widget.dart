@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import 'package:info_battle/utils/constants.dart';
 
 class ProfileWidget extends StatelessWidget {
   final String imagePath;
@@ -14,8 +17,6 @@ class ProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).colorScheme.primary;
-
     return Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 8.0),
       child: Center(
@@ -25,7 +26,7 @@ class ProfileWidget extends StatelessWidget {
             Positioned(
               bottom: 0,
               right: 4,
-              child: buildEditIcon(color),
+              child: buildEditIcon(),
             ),
           ],
         ),
@@ -38,27 +39,27 @@ class ProfileWidget extends StatelessWidget {
 
     return ClipOval(
       child: Material(
-        color: Colors.transparent,
+        color: transparentColor,
         child: Ink.image(
           image: image,
           fit: BoxFit.cover,
-          width: 200,
-          height: 200,
+          width: deviceWidth / 1.8,
+          height: deviceWidth / 1.8,
           child: InkWell(onTap: onClicked),
         ),
       ),
     );
   }
 
-  Widget buildEditIcon(Color color) => buildCircle(
-        color: Colors.white,
-        all: 3,
+  Widget buildEditIcon() => buildCircle(
+        color: Color.fromARGB(255, 229, 138, 73),
+        all: 3.5,
         child: buildCircle(
-          color: color,
-          all: 8,
+          color: textColor,
+          all: 10,
           child: Icon(
             isEdit ? Icons.add_a_photo_rounded : Icons.edit_rounded,
-            color: Colors.white,
+            color: Color.fromARGB(255, 229, 138, 73),
             size: 20,
           ),
         ),

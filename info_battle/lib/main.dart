@@ -10,6 +10,7 @@ import 'package:info_battle/screens/wrappers/auth_wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:info_battle/services/auth.dart';
 import 'package:info_battle/services/database.dart';
+import 'package:info_battle/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -35,6 +36,9 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          errorColor: errorColor,
+        ),
         home: Wrapper(),
       ),
     );

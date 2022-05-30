@@ -1,14 +1,18 @@
 // ignore_for_file: prefer_const_constructors
 //@dart = 2.9
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:info_battle/models/user_data.dart';
 import 'package:info_battle/utils/loading.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/app_user.dart';
 import '../../services/database.dart';
+import '../../utils/constants.dart';
 import 'add_question.dart';
 
 class QuizCreator extends StatefulWidget {
@@ -36,75 +40,155 @@ class _QuizCreatorState extends State<QuizCreator> {
           if (snapshot.hasData) {
             UserData userData = snapshot.data;
             return Scaffold(
+              resizeToAvoidBottomInset: false,
+              extendBodyBehindAppBar: true,
               appBar: AppBar(
-                backgroundColor: Colors.brown[400],
-                title: Text('Create a Quiz'),
+                iconTheme: IconThemeData(
+                  color: textColor,
+                ),
                 elevation: 10.0,
+                backgroundColor: buttonIdleColor,
+                title: Text(
+                  'Create a Quiz',
+                  style: GoogleFonts.balooDa2(
+                      color: textColor,
+                      fontSize: deviceWidth / 17,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
-              body: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          validator: (val) =>
-                              val.isEmpty ? "Enter Quiz Title" : null,
-                          decoration: InputDecoration(
-                              hintText: "Quiz Title",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              )),
-                          onChanged: (val) {
-                            _quizTitle = val;
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          validator: (val) =>
-                              val.isEmpty ? "Enter Quiz Description" : null,
-                          decoration: InputDecoration(
-                              hintText: "Quiz Description",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              )),
-                          onChanged: (val) {
-                            _quizDescription = val;
-                          },
-                        ),
-                      ),
-                      Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          createQuiz(userData);
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 20),
-                          decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(30)),
-                          child: Text(
-                            "Create Quiz",
-                            style: TextStyle(fontSize: 16, color: Colors.white),
+              body: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    alignment: Alignment.topCenter,
+                    fit: BoxFit.fill,
+                    image: questionImage,
+                  ),
+                ),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                  child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: deviceHeight / 7,
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 60,
-                      ),
-                    ],
-                  )),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              style: GoogleFonts.balooDa2(
+                                  color: textColor,
+                                  fontSize: deviceWidth / 23,
+                                  fontWeight: FontWeight.bold),
+                              decoration: InputDecoration(
+                                  errorStyle: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: deviceWidth / 25,
+                                  ),
+                                  hintText: "Quiz Title",
+                                  filled: true,
+                                  fillColor: formColor,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    borderSide: BorderSide(
+                                      color: buttonActiveColor,
+                                      width: 4.0,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    borderSide: BorderSide(
+                                      color: buttonIdleColor,
+                                      width: 4.0,
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  )),
+                              validator: (val) =>
+                                  val.isEmpty ? "Enter Quiz Title" : null,
+                              onChanged: (val) {
+                                _quizTitle = val.trim();
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: deviceHeight / 50,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              style: GoogleFonts.balooDa2(
+                                  color: textColor,
+                                  fontSize: deviceWidth / 23,
+                                  fontWeight: FontWeight.bold),
+                              decoration: InputDecoration(
+                                  errorStyle: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: deviceWidth / 25,
+                                  ),
+                                  hintText: "Quiz Description",
+                                  filled: true,
+                                  fillColor: formColor,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    borderSide: BorderSide(
+                                      color: buttonActiveColor,
+                                      width: 4.0,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    borderSide: BorderSide(
+                                      color: buttonIdleColor,
+                                      width: 4.0,
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  )),
+                              validator: (val) =>
+                                  val.isEmpty ? "Enter Quiz Description" : null,
+                              onChanged: (val) {
+                                _quizDescription = val.trim();
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: deviceHeight / 50,
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(25),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: buttonIdleColor,
+                                onPrimary: buttonActiveColor,
+                                shadowColor: buttonshadowColor,
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                minimumSize:
+                                    Size(deviceWidth / 1.7, deviceHeight / 14),
+                              ),
+                              child: Text(
+                                'Create Quiz',
+                                style: GoogleFonts.balooDa2(
+                                    color: textColor,
+                                    fontSize: deviceWidth / 13,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                createQuiz(userData);
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: 60,
+                          ),
+                        ],
+                      )),
+                ),
+              ),
             );
           } else {
             return Loading();

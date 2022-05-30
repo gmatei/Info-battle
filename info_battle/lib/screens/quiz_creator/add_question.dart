@@ -2,9 +2,13 @@
 
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:info_battle/utils/constants.dart';
 import 'package:info_battle/utils/loading.dart';
 
 import '../../services/database.dart';
@@ -29,144 +33,293 @@ class _AddQuestionState extends State<AddQuestion> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.brown[400],
-        title: Text('Add Quiz Question'),
+        backgroundColor: buttonIdleColor,
+        title: Text(
+          'Add Quiz Question',
+          style: GoogleFonts.balooDa2(
+              color: textColor,
+              fontSize: deviceWidth / 17,
+              fontWeight: FontWeight.bold),
+        ),
         elevation: 10.0,
       ),
       body: isLoading
           ? Loading()
-          : Form(
-              key: _formKey,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 16,
-                    ),
-                    TextFormField(
-                      validator: (val) => val.isEmpty ? "Enter Question" : null,
-                      decoration: InputDecoration(
-                          hintText: "Question",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          )),
-                      onChanged: (val) {
-                        question = val;
-                      },
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    TextFormField(
-                      validator: (val) => val.isEmpty ? "Option 1 " : null,
-                      decoration: InputDecoration(
-                          hintText: "Option 1 (Correct answer)",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          )),
-                      onChanged: (val) {
-                        option1 = val;
-                      },
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    TextFormField(
-                      validator: (val) => val.isEmpty ? "Option 2 " : null,
-                      decoration: InputDecoration(
-                          hintText: "Option 2",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          )),
-                      onChanged: (val) {
-                        option2 = val;
-                      },
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    TextFormField(
-                      validator: (val) => val.isEmpty ? "Option3 " : null,
-                      decoration: InputDecoration(
-                          hintText: "Option 3",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          )),
-                      onChanged: (val) {
-                        option3 = val;
-                      },
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    TextFormField(
-                      validator: (val) => val.isEmpty ? "Option4 " : null,
-                      decoration: InputDecoration(
-                          hintText: "Option 4",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          )),
-                      onChanged: (val) {
-                        option4 = val;
-                      },
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Spacer(),
-                    Row(
+          : Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  alignment: Alignment.topCenter,
+                  fit: BoxFit.fill,
+                  image: questionImage,
+                ),
+              ),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                child: Form(
+                  key: _formKey,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
+                        SizedBox(
+                          height: deviceHeight / 7,
+                        ),
+                        TextFormField(
+                          style: GoogleFonts.balooDa2(
+                              color: textColor,
+                              fontSize: deviceWidth / 23,
+                              fontWeight: FontWeight.bold),
+                          validator: (val) =>
+                              val.isEmpty ? "Enter Question" : null,
+                          decoration: InputDecoration(
+                              errorStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: deviceWidth / 28,
+                              ),
+                              hintText: "Question",
+                              filled: true,
+                              fillColor: formColor,
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: buttonActiveColor,
+                                  width: 4.0,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: buttonIdleColor,
+                                  width: 4.0,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              )),
+                          onChanged: (val) {
+                            question = val;
                           },
-                          child: Container(
-                            alignment: Alignment.center,
-                            width: MediaQuery.of(context).size.width / 2 - 20,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 20),
-                            decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.circular(30)),
-                            child: Text(
-                              "Submit",
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.white),
-                            ),
-                          ),
                         ),
                         SizedBox(
-                          width: 8,
+                          height: deviceHeight / 60,
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            uploadQuizData();
+                        TextFormField(
+                          style: GoogleFonts.balooDa2(
+                              color: textColor,
+                              fontSize: deviceWidth / 23,
+                              fontWeight: FontWeight.bold),
+                          validator: (val) => val.isEmpty ? "Option 1 " : null,
+                          decoration: InputDecoration(
+                              errorStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: deviceWidth / 28,
+                              ),
+                              filled: true,
+                              fillColor: formColor,
+                              hintText: "Option 1 (Correct answer)",
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: buttonActiveColor,
+                                  width: 4.0,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: buttonIdleColor,
+                                  width: 4.0,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              )),
+                          onChanged: (val) {
+                            option1 = val;
                           },
-                          child: Container(
-                            alignment: Alignment.center,
-                            width: MediaQuery.of(context).size.width / 2 - 40,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 20),
-                            decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.circular(30)),
-                            child: Text(
-                              "Add Question",
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                        SizedBox(
+                          height: deviceHeight / 60,
+                        ),
+                        TextFormField(
+                          style: GoogleFonts.balooDa2(
+                              color: textColor,
+                              fontSize: deviceWidth / 23,
+                              fontWeight: FontWeight.bold),
+                          validator: (val) => val.isEmpty ? "Option 2 " : null,
+                          decoration: InputDecoration(
+                              errorStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: deviceWidth / 28,
+                              ),
+                              filled: true,
+                              fillColor: formColor,
+                              hintText: "Option 2",
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: buttonActiveColor,
+                                  width: 4.0,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: buttonIdleColor,
+                                  width: 4.0,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              )),
+                          onChanged: (val) {
+                            option2 = val;
+                          },
+                        ),
+                        SizedBox(
+                          height: deviceHeight / 60,
+                        ),
+                        TextFormField(
+                          style: GoogleFonts.balooDa2(
+                              color: textColor,
+                              fontSize: deviceWidth / 23,
+                              fontWeight: FontWeight.bold),
+                          validator: (val) => val.isEmpty ? "Option 3 " : null,
+                          decoration: InputDecoration(
+                              errorStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: deviceWidth / 28,
+                              ),
+                              filled: true,
+                              fillColor: formColor,
+                              hintText: "Option 3",
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: buttonActiveColor,
+                                  width: 4.0,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: buttonIdleColor,
+                                  width: 4.0,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              )),
+                          onChanged: (val) {
+                            option3 = val;
+                          },
+                        ),
+                        SizedBox(
+                          height: deviceHeight / 60,
+                        ),
+                        TextFormField(
+                          style: GoogleFonts.balooDa2(
+                              color: textColor,
+                              fontSize: deviceWidth / 23,
+                              fontWeight: FontWeight.bold),
+                          validator: (val) => val.isEmpty ? "Option 4 " : null,
+                          decoration: InputDecoration(
+                              errorStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: deviceWidth / 28,
+                              ),
+                              filled: true,
+                              fillColor: formColor,
+                              hintText: "Option 4",
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: buttonActiveColor,
+                                  width: 4.0,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: buttonIdleColor,
+                                  width: 4.0,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              )),
+                          onChanged: (val) {
+                            option4 = val;
+                          },
+                        ),
+                        SizedBox(
+                          height: deviceHeight / 20,
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.all(deviceWidth / 85),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: buttonIdleColor,
+                                  onPrimary: buttonActiveColor,
+                                  shadowColor: buttonshadowColor,
+                                  elevation: 10,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(20.0)),
+                                  minimumSize:
+                                      Size(deviceWidth / 6, deviceHeight / 15),
+                                ),
+                                child: Text(
+                                  'Submit Quiz',
+                                  style: GoogleFonts.balooDa2(
+                                      color: textColor,
+                                      fontSize: deviceWidth / 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
                             ),
-                          ),
+                            Container(
+                              margin: EdgeInsets.all(deviceWidth / 19),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: buttonIdleColor,
+                                  onPrimary: buttonActiveColor,
+                                  shadowColor: buttonshadowColor,
+                                  elevation: 10,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(20.0)),
+                                  minimumSize:
+                                      Size(deviceWidth / 6, deviceHeight / 15),
+                                ),
+                                child: Text(
+                                  'Add Question',
+                                  style: GoogleFonts.balooDa2(
+                                      color: textColor,
+                                      fontSize: deviceWidth / 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: () {
+                                  uploadQuizData();
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 60,
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 60,
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
