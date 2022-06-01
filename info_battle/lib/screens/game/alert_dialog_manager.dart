@@ -45,7 +45,7 @@ class _AlertDialogManagerState extends State<AlertDialogManager> {
             title: AnimatedTextKit(
               animatedTexts: [
                 TypewriterAnimatedText(
-                    "Round ${widget.gameData.currentRound} / 5"),
+                    "Round ${widget.gameData.currentRound} / ${widget.gameData.totalRounds}"),
               ],
             ),
             content: SizedBox(
@@ -129,7 +129,7 @@ class _AlertDialogManagerState extends State<AlertDialogManager> {
               title: AnimatedTextKit(
                 animatedTexts: [
                   TypewriterAnimatedText(
-                      "Round ${widget.gameData.currentRound} / 5"),
+                      "Round ${widget.gameData.currentRound} / ${widget.gameData.totalRounds}"),
                 ],
               ),
               content: SizedBox(
@@ -157,7 +157,7 @@ class _AlertDialogManagerState extends State<AlertDialogManager> {
             title: AnimatedTextKit(
               animatedTexts: [
                 TypewriterAnimatedText(
-                    "Round ${widget.gameData.currentRound} / 5"),
+                    "Round ${widget.gameData.currentRound} / ${widget.gameData.totalRounds}"),
               ],
             ),
             content: SizedBox(

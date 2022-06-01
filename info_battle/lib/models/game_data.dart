@@ -9,6 +9,7 @@ class GameData {
   final String command;
   final String activePlayer;
   final int currentRound;
+  final int totalRounds;
   final String player1;
   final String player2;
   final String player3;
@@ -28,6 +29,7 @@ class GameData {
       this.command,
       this.activePlayer,
       this.currentRound,
+      this.totalRounds,
       this.player1,
       this.player2,
       this.player3,

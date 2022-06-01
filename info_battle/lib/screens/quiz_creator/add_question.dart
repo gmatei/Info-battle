@@ -70,14 +70,14 @@ class _AddQuestionState extends State<AddQuestion> {
                         TextFormField(
                           style: GoogleFonts.balooDa2(
                               color: textColor,
-                              fontSize: deviceWidth / 23,
+                              fontSize: deviceHeight / 50,
                               fontWeight: FontWeight.bold),
                           validator: (val) =>
                               val.isEmpty ? "Enter Question" : null,
                           decoration: InputDecoration(
                               errorStyle: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: deviceWidth / 28,
+                                fontSize: deviceHeight / 65,
                               ),
                               hintText: "Question",
                               filled: true,
@@ -97,7 +97,7 @@ class _AddQuestionState extends State<AddQuestion> {
                                 ),
                               ),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(20),
                               )),
                           onChanged: (val) {
                             question = val;
@@ -109,13 +109,13 @@ class _AddQuestionState extends State<AddQuestion> {
                         TextFormField(
                           style: GoogleFonts.balooDa2(
                               color: textColor,
-                              fontSize: deviceWidth / 23,
+                              fontSize: deviceHeight / 50,
                               fontWeight: FontWeight.bold),
                           validator: (val) => val.isEmpty ? "Option 1 " : null,
                           decoration: InputDecoration(
                               errorStyle: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: deviceWidth / 28,
+                                fontSize: deviceHeight / 65,
                               ),
                               filled: true,
                               fillColor: formColor,
@@ -135,7 +135,7 @@ class _AddQuestionState extends State<AddQuestion> {
                                 ),
                               ),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(20),
                               )),
                           onChanged: (val) {
                             option1 = val;
@@ -147,13 +147,13 @@ class _AddQuestionState extends State<AddQuestion> {
                         TextFormField(
                           style: GoogleFonts.balooDa2(
                               color: textColor,
-                              fontSize: deviceWidth / 23,
+                              fontSize: deviceHeight / 50,
                               fontWeight: FontWeight.bold),
                           validator: (val) => val.isEmpty ? "Option 2 " : null,
                           decoration: InputDecoration(
                               errorStyle: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: deviceWidth / 28,
+                                fontSize: deviceHeight / 65,
                               ),
                               filled: true,
                               fillColor: formColor,
@@ -173,7 +173,7 @@ class _AddQuestionState extends State<AddQuestion> {
                                 ),
                               ),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(20),
                               )),
                           onChanged: (val) {
                             option2 = val;
@@ -185,13 +185,13 @@ class _AddQuestionState extends State<AddQuestion> {
                         TextFormField(
                           style: GoogleFonts.balooDa2(
                               color: textColor,
-                              fontSize: deviceWidth / 23,
+                              fontSize: deviceHeight / 50,
                               fontWeight: FontWeight.bold),
                           validator: (val) => val.isEmpty ? "Option 3 " : null,
                           decoration: InputDecoration(
                               errorStyle: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: deviceWidth / 28,
+                                fontSize: deviceHeight / 65,
                               ),
                               filled: true,
                               fillColor: formColor,
@@ -211,7 +211,7 @@ class _AddQuestionState extends State<AddQuestion> {
                                 ),
                               ),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(20),
                               )),
                           onChanged: (val) {
                             option3 = val;
@@ -223,13 +223,13 @@ class _AddQuestionState extends State<AddQuestion> {
                         TextFormField(
                           style: GoogleFonts.balooDa2(
                               color: textColor,
-                              fontSize: deviceWidth / 23,
+                              fontSize: deviceHeight / 50,
                               fontWeight: FontWeight.bold),
                           validator: (val) => val.isEmpty ? "Option 4 " : null,
                           decoration: InputDecoration(
                               errorStyle: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: deviceWidth / 28,
+                                fontSize: deviceHeight / 65,
                               ),
                               filled: true,
                               fillColor: formColor,
@@ -249,14 +249,14 @@ class _AddQuestionState extends State<AddQuestion> {
                                 ),
                               ),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(20),
                               )),
                           onChanged: (val) {
                             option4 = val;
                           },
                         ),
                         SizedBox(
-                          height: deviceHeight / 20,
+                          height: deviceHeight / 50,
                         ),
                         Row(
                           children: [
@@ -313,9 +313,6 @@ class _AddQuestionState extends State<AddQuestion> {
                               ),
                             ),
                           ],
-                        ),
-                        SizedBox(
-                          height: 60,
                         ),
                       ],
                     ),

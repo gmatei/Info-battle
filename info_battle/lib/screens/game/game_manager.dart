@@ -47,7 +47,7 @@ class _GameManagerState extends State<GameManager> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 GameData gameData = snapshot.data;
-                if (gameData.currentRound < 3) {
+                if (gameData.currentRound <= gameData.totalRounds) {
                   return Scaffold(
                       appBar: AppBar(
                         automaticallyImplyLeading: false,

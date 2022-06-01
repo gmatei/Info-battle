@@ -54,6 +54,7 @@ class DatabaseService {
       command: snapshot.get('command'),
       activePlayer: snapshot.get('activePlayer'),
       currentRound: snapshot.get('currentRound'),
+      totalRounds: snapshot.get('totalRounds'),
       player1: snapshot.get('player1'),
       player2: snapshot.get('player2'),
       player3: snapshot.get('player3'),
@@ -180,7 +181,7 @@ class DatabaseService {
     });
   }
 
-  Future createGame(String uid, String gameCode) async {
+  Future createGame(String uid, String gameCode, int nrRounds) async {
     Map<String, String> currentQuestion = {
       'qText': 'none',
       'option1': 'option1',
@@ -196,6 +197,7 @@ class DatabaseService {
       'command': 'init',
       'activePlayer': 'none',
       'currentRound': 0,
+      'totalRounds': nrRounds,
       'player1': 'none',
       'player2': 'none',
       'player3': 'none',

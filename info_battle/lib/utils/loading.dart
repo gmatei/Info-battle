@@ -16,7 +16,7 @@ class Loading extends StatelessWidget {
     return Container(
       color: buttonIdleColor,
       child: Center(
-        child: SpinKitChasingDots(
+        child: SpinKitCircle(
           color: buttonActiveColor,
           size: deviceHeight / 10,
         ),

@@ -39,3 +39,12 @@ var homeImage = const NetworkImage(
 
 var questionImage = const NetworkImage(
     'https://firebasestorage.googleapis.com/v0/b/info-battle.appspot.com/o/images%2Fquestion_back.jpg?alt=media&token=d178267b-cf09-4f04-856e-c545e3b75719');
+
+var playImage = const NetworkImage(
+    'https://images.unsplash.com/photo-1624811072711-3e3481f355fd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=303&q=80');
+
+var gameImage = const NetworkImage(
+    'https://images.unsplash.com/photo-1601498940341-16572ea1ab83?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=415&q=80');
+
+var createImage = const NetworkImage(
+    'https://images.unsplash.com/photo-1611329857530-61d261e393e0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80');
