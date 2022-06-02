@@ -10,15 +10,16 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../utils/constants.dart';
 
-class Register extends StatefulWidget {
-  final Function toggleView;
-  const Register({Key? key, required this.toggleView}) : super(key: key);
+class PasswordReset extends StatefulWidget {
+  const PasswordReset({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<Register> createState() => _RegisterState();
+  State<PasswordReset> createState() => _PasswordResetState();
 }
 
-class _RegisterState extends State<Register> {
+class _PasswordResetState extends State<PasswordReset> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   String error = 'none';
@@ -27,7 +28,6 @@ class _RegisterState extends State<Register> {
 
   // text field state
   String email = '';
-  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -41,27 +41,13 @@ class _RegisterState extends State<Register> {
           backgroundColor: transparentColor,
           elevation: 0.0,
           title: Text(
-            'Sign up to Info Battle',
+            'Reset password',
             style: GoogleFonts.balooDa2(
               color: textColor,
               fontSize: deviceWidth / 18,
               fontWeight: FontWeight.bold,
             ),
           ),
-          actions: <Widget>[
-            TextButton.icon(
-              icon: Icon(Icons.switch_account_rounded, color: textColor),
-              label: Text(
-                'Sign In',
-                style: GoogleFonts.balooDa2(
-                  color: textColor,
-                  fontSize: deviceWidth / 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              onPressed: () => widget.toggleView(),
-            ),
-          ],
         ),
         body: Container(
           padding: EdgeInsets.only(
@@ -118,42 +104,6 @@ class _RegisterState extends State<Register> {
                       setState(() => email = val.trim());
                     },
                   ),
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        errorStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                        filled: true,
-                        fillColor: Colors.white54,
-                        hintText: "Password",
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: BorderSide(
-                            color: buttonActiveColor,
-                            width: 4.0,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: BorderSide(
-                            color: buttonIdleColor,
-                            width: 4.0,
-                          ),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        )),
-                    style: TextStyle(fontSize: 18),
-                    obscureText: true,
-                    validator: (val) => val!.length < 6
-                        ? 'Enter a password 6+ characters long'
-                        : null,
-                    onChanged: (val) {
-                      setState(() => password = val);
-                    },
-                  ),
                   SizedBox(height: 40.0),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -166,7 +116,7 @@ class _RegisterState extends State<Register> {
                         minimumSize: Size(150, 50),
                       ),
                       child: Text(
-                        'Sign Up',
+                        'Reset Password',
                         style: GoogleFonts.balooDa2(
                           color: textColor,
                           fontSize: deviceWidth / 20,
@@ -178,17 +128,46 @@ class _RegisterState extends State<Register> {
                           setState(() {
                             loading = true;
                           });
-                          dynamic result = await _auth
-                              .registerWithEmailAndPassword(email, password);
+                          dynamic result = await _auth.resetPassword(email);
                           if (result == null) {
                             setState(() {
-                              error = 'Email adress invalid / already used';
+                              error = 'No account exists with that adress';
+                              loading = false;
+                            });
+                          } else {
+                            setState(() {
+                              error = 'clear';
                               loading = false;
                             });
                           }
                         }
                       }),
-                  SizedBox(height: deviceHeight / 3 + 5),
+                  error == 'clear'
+                      ? Container(
+                          margin: EdgeInsets.all(25),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16.0),
+                            color: formColor,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 4, horizontal: 16),
+                            child: Text(
+                              'We\'ve sent you a reset link to your email adress',
+                              style: GoogleFonts.balooDa2(
+                                  color: textColor,
+                                  fontSize: deviceWidth / 21,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        )
+                      : SizedBox(
+                          height: 0.0,
+                          width: 0.0,
+                        ),
+                  error != 'clear'
+                      ? SizedBox(height: deviceHeight / 2.3)
+                      : SizedBox(height: deviceHeight / 4),
                   InkWell(
                       child: Text(
                         'Goanță Matei - Cosmin © 2022',

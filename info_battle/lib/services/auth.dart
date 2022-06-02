@@ -18,18 +18,6 @@ class AuthService {
     return user != null ? AppUser(uid: user.uid) : null;
   }
 
-  //sign in anon
-  Future signInAnon() async {
-    try {
-      UserCredential result = await _firebaseAuth.signInAnonymously();
-      User user = result.user;
-      return _appUserFromUser(user);
-    } on FirebaseAuthException catch (e) {
-      print(e.message);
-      return null;
-    }
-  }
-
   //register with email
   Future registerWithEmailAndPassword(String email, String password) async {
     try {
@@ -67,6 +55,16 @@ class AuthService {
   Future signOut() async {
     try {
       return await _firebaseAuth.signOut();
+    } catch (error) {
+      print(error.toString());
+      return null;
+    }
+  }
+
+  Future resetPassword(String email) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+      return true;
     } catch (error) {
       print(error.toString());
       return null;

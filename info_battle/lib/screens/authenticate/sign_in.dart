@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:info_battle/screens/authenticate/password_reset.dart';
 import 'package:info_battle/services/auth.dart';
 import 'package:info_battle/utils/loading.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -21,7 +22,7 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
-  String error = '';
+  String error = 'none';
 
   bool loading = false;
 
@@ -68,8 +69,8 @@ class _SignInState extends State<SignIn> {
         ),
         body: Container(
           padding: EdgeInsets.only(
-              left: deviceWidth / 6,
-              right: deviceWidth / 6,
+              left: deviceWidth / 7.5,
+              right: deviceWidth / 7.5,
               top: deviceHeight / 7),
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -79,14 +80,39 @@ class _SignInState extends State<SignIn> {
             ),
           ),
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 0.2, sigmaY: 0.2),
+            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
             child: Form(
               key: _formKey,
               child: Column(
                 children: <Widget>[
                   SizedBox(height: 20.0),
                   TextFormField(
-                    decoration: textInputDecoration.copyWith(hintText: 'Email'),
+                    decoration: InputDecoration(
+                        errorStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white54,
+                        hintText: "Email",
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide(
+                            color: buttonActiveColor,
+                            width: 4.0,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide(
+                            color: buttonIdleColor,
+                            width: 4.0,
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        )),
+                    style: TextStyle(fontSize: 18),
                     validator: (val) => val!.isEmpty ? 'Enter an email' : null,
                     onChanged: (val) {
                       setState(() => email = val.trim());
@@ -94,12 +120,38 @@ class _SignInState extends State<SignIn> {
                   ),
                   SizedBox(height: 20.0),
                   TextFormField(
-                    decoration:
-                        textInputDecoration.copyWith(hintText: 'Password'),
+                    decoration: InputDecoration(
+                        errorStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white54,
+                        hintText: "Password",
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide(
+                            color: buttonActiveColor,
+                            width: 4.0,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide(
+                            color: buttonIdleColor,
+                            width: 4.0,
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        )),
+                    style: TextStyle(fontSize: 18),
                     obscureText: true,
                     validator: (val) => val!.length < 6
                         ? 'Enter a password 6+ characters long'
-                        : null,
+                        : error != 'none'
+                            ? error
+                            : null,
                     onChanged: (val) {
                       setState(() => password = val);
                     },
@@ -139,7 +191,21 @@ class _SignInState extends State<SignIn> {
                           }
                         }
                       }),
-                  SizedBox(height: deviceHeight / 2.7),
+                  SizedBox(height: deviceHeight / 7),
+                  InkWell(
+                      child: Text(
+                        'I forgot my password... :(',
+                        style: GoogleFonts.balooDa2(
+                          color: buttonActiveColor,
+                          fontSize: deviceWidth / 26,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => PasswordReset()),
+                          )),
+                  SizedBox(height: deviceHeight / 6),
                   InkWell(
                       child: Text(
                         'Goanță Matei - Cosmin © 2022',

@@ -365,7 +365,7 @@ class DatabaseService {
         break;
       case 'showAnswer':
         {
-          timeValue = 8;
+          timeValue = 22;
         }
         break;
       case 'returnFromQuestion':
