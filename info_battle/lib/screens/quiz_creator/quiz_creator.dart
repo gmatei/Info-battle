@@ -105,8 +105,11 @@ class _QuizCreatorState extends State<QuizCreator> {
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   )),
-                              validator: (val) =>
-                                  val.isEmpty ? "Enter Quiz Title" : null,
+                              validator: (val) => val.isEmpty
+                                  ? "Enter Quiz Title"
+                                  : val.length > 30
+                                      ? "Quiz Title must be maximum 30 characters"
+                                      : null,
                               onChanged: (val) {
                                 _quizTitle = val.trim();
                               },
@@ -147,8 +150,11 @@ class _QuizCreatorState extends State<QuizCreator> {
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   )),
-                              validator: (val) =>
-                                  val.isEmpty ? "Enter Quiz Description" : null,
+                              validator: (val) => val.isEmpty
+                                  ? "Enter Quiz Description"
+                                  : val.length > 60
+                                      ? "Quiz Description must be maximum 60 characters"
+                                      : null,
                               onChanged: (val) {
                                 _quizDescription = val.trim();
                               },

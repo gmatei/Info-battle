@@ -41,10 +41,19 @@ var questionImage = const NetworkImage(
     'https://firebasestorage.googleapis.com/v0/b/info-battle.appspot.com/o/images%2Fquestion_back.jpg?alt=media&token=d178267b-cf09-4f04-856e-c545e3b75719');
 
 var playImage = const NetworkImage(
-    'https://images.unsplash.com/photo-1624811072711-3e3481f355fd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=303&q=80');
+    'https://firebasestorage.googleapis.com/v0/b/info-battle.appspot.com/o/images%2FplayImage.jpg?alt=media&token=b5e97838-7c8d-42e2-9f00-863f99d2a436');
 
 var gameImage = const NetworkImage(
-    'https://images.unsplash.com/photo-1601498940341-16572ea1ab83?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=415&q=80');
+    'https://firebasestorage.googleapis.com/v0/b/info-battle.appspot.com/o/images%2FgameImage.jpg?alt=media&token=bf49ce91-4b4f-4e6c-80f2-6c447a124f83');
 
 var createImage = const NetworkImage(
-    'https://images.unsplash.com/photo-1611329857530-61d261e393e0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80');
+    'https://firebasestorage.googleapis.com/v0/b/info-battle.appspot.com/o/images%2FcreateImage.jpg?alt=media&token=eb01564a-903e-4bce-9ce4-71a44530a952');
+
+var medalImageGold = const NetworkImage(
+    'https://firebasestorage.googleapis.com/v0/b/info-battle.appspot.com/o/images%2FgoldMedal.png?alt=media&token=78ce7a7f-f38d-4edc-a330-73faa33bb737');
+
+var medalImageSilver = const NetworkImage(
+    'https://firebasestorage.googleapis.com/v0/b/info-battle.appspot.com/o/images%2FsilverMedal.png?alt=media&token=ee63fc6c-c782-4f9b-a755-829bbcc43b26');
+
+var medalImageBronze = const NetworkImage(
+    'https://firebasestorage.googleapis.com/v0/b/info-battle.appspot.com/o/images%2FbronzeMedal.png?alt=media&token=ed9ac892-f86e-4bbf-86a2-d2dc6df067ee');

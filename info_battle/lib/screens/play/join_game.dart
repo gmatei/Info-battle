@@ -108,7 +108,7 @@ class _JoinGameState extends State<JoinGame> {
                                       TextFormField(
                                         style: GoogleFonts.balooDa2(
                                             color: textColor,
-                                            fontSize: deviceHeight / 50,
+                                            fontSize: deviceHeight / 30,
                                             fontWeight: FontWeight.bold),
                                         initialValue: null,
                                         decoration: InputDecoration(
@@ -264,7 +264,7 @@ class _JoinGameState extends State<JoinGame> {
                             TextFormField(
                               style: GoogleFonts.balooDa2(
                                   color: textColor,
-                                  fontSize: deviceHeight / 50,
+                                  fontSize: deviceHeight / 30,
                                   fontWeight: FontWeight.bold),
                               initialValue: null,
                               decoration: InputDecoration(

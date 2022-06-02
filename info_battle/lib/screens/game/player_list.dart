@@ -1,11 +1,8 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, import_of_legacy_library_into_null_safe
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:info_battle/models/game_data.dart';
 import 'package:info_battle/models/game_player.dart';
-import 'package:info_battle/models/user_data.dart';
 import 'package:provider/provider.dart';
 
 import 'player_widget.dart';

@@ -6,15 +6,18 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:info_battle/models/questionset.dart';
 import 'package:info_battle/screens/play/quiz_tile.dart';
+import 'package:info_battle/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 class QuizList extends StatefulWidget {
   QuizList(
-    this.callBackCheck, {
+    this.callBackCheck,
+    this.quizName, {
     Key key,
   }) : super(key: key);
 
   Function callBackCheck;
+  String quizName;
 
   @override
   State<QuizList> createState() => _QuizListState();
@@ -24,17 +27,25 @@ class _QuizListState extends State<QuizList> {
   @override
   Widget build(BuildContext context) {
     final quizzes = Provider.of<List<QuestionSet>>(context);
+    if (widget.quizName != 'none') {
+      quizzes.removeWhere((quiz) => !quiz.title.contains(widget.quizName));
+    }
 
     return ListView.builder(
       shrinkWrap: true,
       primary: false,
-      padding: EdgeInsets.symmetric(horizontal: 32),
+      padding: EdgeInsets.symmetric(
+        horizontal: 32,
+      ),
       physics: BouncingScrollPhysics(),
       itemCount: quizzes.length,
       itemBuilder: (context, index) {
-        return QuizTile(
-          quiz: quizzes[index],
-          callBackCheck: widget.callBackCheck,
+        return Padding(
+          padding: EdgeInsets.symmetric(vertical: 3),
+          child: QuizTile(
+            quiz: quizzes[index],
+            callBackCheck: widget.callBackCheck,
+          ),
         );
       },
     );

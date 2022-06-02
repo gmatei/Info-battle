@@ -5,9 +5,11 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:info_battle/models/game_data.dart';
 import 'package:info_battle/models/game_player.dart';
 import 'package:info_battle/screens/game/question_screen.dart';
+import 'package:info_battle/utils/constants.dart';
 
 import '../../models/user_data.dart';
 import '../../services/database.dart';
@@ -29,35 +31,64 @@ class _AlertDialogManagerState extends State<AlertDialogManager> {
       case "init":
         {
           return AlertDialog(
-            title: Text("Info Battle started"),
+            backgroundColor: formColor,
+            elevation: 10.0,
+            title: Text(
+              "Info Battle started",
+              style: GoogleFonts.balooDa2(
+                color: buttonIdleColor,
+                fontSize: deviceWidth / 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             content: AnimatedTextKit(
               animatedTexts: [
-                WavyAnimatedText("Wait for everyone to connect..."),
+                WavyAnimatedText(
+                  "Wait for everyone to connect...",
+                  textStyle: GoogleFonts.balooDa2(
+                    color: textColor,
+                    fontSize: deviceWidth / 20,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
               ],
             ),
-            actions: [],
           );
         }
 
       case 'round':
         {
           return AlertDialog(
+            backgroundColor: formColor,
+            elevation: 10.0,
             title: AnimatedTextKit(
               animatedTexts: [
                 TypewriterAnimatedText(
-                    "Round ${widget.gameData.currentRound} / ${widget.gameData.totalRounds}"),
+                  "Round ${widget.gameData.currentRound} / ${widget.gameData.totalRounds}",
+                  textStyle: GoogleFonts.balooDa2(
+                    color: buttonIdleColor,
+                    fontSize: deviceWidth / 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
             content: SizedBox(
-              height: MediaQuery.of(context).size.height / 17,
               child: AnimatedTextKit(
                 animatedTexts: [
                   TypewriterAnimatedText(
-                      '${widget.gameData.activePlayer}\'s turn'),
+                    '${widget.gameData.activePlayer}\'s turn',
+                    textStyle: GoogleFonts.balooDa2(
+                      color: textColor,
+                      fontSize: deviceWidth / 20,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
                 ],
               ),
             ),
-            actions: [],
           );
         }
 
@@ -65,19 +96,34 @@ class _AlertDialogManagerState extends State<AlertDialogManager> {
         {
           if (widget.userData.name == widget.gameData.activePlayer) {
             return AlertDialog(
+              backgroundColor: formColor,
+              elevation: 10.0,
               title: AnimatedTextKit(
                 animatedTexts: [
                   TypewriterAnimatedText(
-                      "Round ${widget.gameData.currentRound} / 5"),
+                    "Round ${widget.gameData.currentRound} / ${widget.gameData.totalRounds}",
+                    textStyle: GoogleFonts.balooDa2(
+                      color: buttonIdleColor,
+                      fontSize: deviceWidth / 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ],
               ),
               content: SizedBox(
-                height: MediaQuery.of(context).size.height / 10,
                 child: Column(
                   children: [
                     AnimatedTextKit(
                       animatedTexts: [
-                        TypewriterAnimatedText('Who do you want to attack?'),
+                        TypewriterAnimatedText(
+                          'Who do you want to attack?',
+                          textStyle: GoogleFonts.balooDa2(
+                            color: textColor,
+                            fontSize: deviceWidth / 20,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
                       ],
                     ),
                     StreamBuilder<List<PlayerData>>(
@@ -92,8 +138,19 @@ class _AlertDialogManagerState extends State<AlertDialogManager> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 TextButton.icon(
-                                  icon: Icon(Icons.person),
-                                  label: Text(playerData[0].name),
+                                  icon: CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(playerData[0].imagePath),
+                                    radius: deviceWidth / 16,
+                                  ),
+                                  label: Text(
+                                    playerData[0].name,
+                                    style: GoogleFonts.balooDa2(
+                                      color: buttonActiveColor,
+                                      fontSize: deviceWidth / 21,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                   onPressed: () async {
                                     DatabaseService(
                                             gameid: widget.gameData.gameId)
@@ -103,8 +160,19 @@ class _AlertDialogManagerState extends State<AlertDialogManager> {
                                   },
                                 ),
                                 TextButton.icon(
-                                  icon: Icon(Icons.person),
-                                  label: Text(playerData[1].name),
+                                  icon: CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(playerData[1].imagePath),
+                                    radius: deviceWidth / 16,
+                                  ),
+                                  label: Text(
+                                    playerData[1].name,
+                                    style: GoogleFonts.balooDa2(
+                                      color: buttonActiveColor,
+                                      fontSize: deviceWidth / 21,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                   onPressed: () async {
                                     DatabaseService(
                                             gameid: widget.gameData.gameId)
@@ -122,30 +190,42 @@ class _AlertDialogManagerState extends State<AlertDialogManager> {
                   ],
                 ),
               ),
-              actions: [],
             );
           } else {
             return AlertDialog(
+              backgroundColor: formColor,
+              elevation: 10.0,
               title: AnimatedTextKit(
                 animatedTexts: [
                   TypewriterAnimatedText(
-                      "Round ${widget.gameData.currentRound} / ${widget.gameData.totalRounds}"),
+                    "Round ${widget.gameData.currentRound} / ${widget.gameData.totalRounds}",
+                    textStyle: GoogleFonts.balooDa2(
+                      color: buttonIdleColor,
+                      fontSize: deviceWidth / 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ],
               ),
               content: SizedBox(
-                height: MediaQuery.of(context).size.height / 10,
                 child: Column(
                   children: [
                     AnimatedTextKit(
                       animatedTexts: [
                         TypewriterAnimatedText(
-                            'Wait for ${widget.gameData.activePlayer} to make his choice...'),
+                          'Wait for ${widget.gameData.activePlayer} to make their choice...',
+                          textStyle: GoogleFonts.balooDa2(
+                            color: textColor,
+                            fontSize: deviceWidth / 20,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
                       ],
                     ),
                   ],
                 ),
               ),
-              actions: [],
             );
           }
         }
@@ -154,26 +234,39 @@ class _AlertDialogManagerState extends State<AlertDialogManager> {
       case 'attack':
         {
           return AlertDialog(
+            backgroundColor: formColor,
+            elevation: 10.0,
             title: AnimatedTextKit(
               animatedTexts: [
                 TypewriterAnimatedText(
-                    "Round ${widget.gameData.currentRound} / ${widget.gameData.totalRounds}"),
+                  "Round ${widget.gameData.currentRound} / ${widget.gameData.totalRounds}",
+                  textStyle: GoogleFonts.balooDa2(
+                    color: buttonIdleColor,
+                    fontSize: deviceWidth / 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
             content: SizedBox(
-              height: MediaQuery.of(context).size.height / 10,
               child: Column(
                 children: [
                   AnimatedTextKit(
                     animatedTexts: [
                       TypewriterAnimatedText(
-                          '${widget.gameData.activePlayer} is attacking ${widget.gameData.attackedPlayer}'),
+                        '${widget.gameData.activePlayer} is attacking ${widget.gameData.attackedPlayer}',
+                        textStyle: GoogleFonts.balooDa2(
+                          color: textColor,
+                          fontSize: deviceWidth / 20,
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
                     ],
                   ),
                 ],
               ),
             ),
-            actions: [],
           );
         }
 
@@ -188,16 +281,40 @@ class _AlertDialogManagerState extends State<AlertDialogManager> {
       case 'returnFromQuestion':
         {
           return AlertDialog(
-            title: Text(widget.gameData.command),
+            backgroundColor: formColor,
+            elevation: 10.0,
+            title: Text(
+              'So this happened:',
+              style: GoogleFonts.balooDa2(
+                color: buttonIdleColor,
+                fontSize: deviceWidth / 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             content: AnimatedTextKit(
               animatedTexts: [
-                WavyAnimatedText(widget.gameData.activeUpdate,
-                    speed: Duration(milliseconds: 100)),
-                WavyAnimatedText(widget.gameData.attackedUpdate,
-                    speed: Duration(milliseconds: 100)),
+                WavyAnimatedText(
+                  widget.gameData.activeUpdate,
+                  speed: Duration(milliseconds: 100),
+                  textStyle: GoogleFonts.balooDa2(
+                    color: textColor,
+                    fontSize: deviceWidth / 20,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                WavyAnimatedText(
+                  widget.gameData.attackedUpdate,
+                  speed: Duration(milliseconds: 100),
+                  textStyle: GoogleFonts.balooDa2(
+                    color: textColor,
+                    fontSize: deviceWidth / 20,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
               ],
             ),
-            actions: [],
           );
         }
         break;
@@ -205,13 +322,29 @@ class _AlertDialogManagerState extends State<AlertDialogManager> {
       default:
         {
           return AlertDialog(
-            title: Text(widget.gameData.command),
+            backgroundColor: formColor,
+            elevation: 10.0,
+            title: Text(
+              widget.gameData.command,
+              style: GoogleFonts.balooDa2(
+                color: buttonIdleColor,
+                fontSize: deviceWidth / 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             content: AnimatedTextKit(
               animatedTexts: [
-                WavyAnimatedText("Work going on behind the scenes...")
+                WavyAnimatedText(
+                  "Work going on behind the scenes...",
+                  textStyle: GoogleFonts.balooDa2(
+                    color: textColor,
+                    fontSize: deviceWidth / 20,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                  ),
+                )
               ],
             ),
-            actions: [],
           );
         }
     }

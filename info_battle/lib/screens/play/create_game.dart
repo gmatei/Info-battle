@@ -391,15 +391,21 @@ class _CreateGameState extends State<CreateGame> {
                             ),
                             onPressed: () async {
                               if (widget.listOfQSets != null) {
-                                setState(() {
-                                  _createGameOn = true;
-                                });
-                                await DatabaseService()
-                                    .createGame(user.uid, inviteCode, counter);
-                                await DatabaseService(gameid: inviteCode)
-                                    .addPlayer(userData, inviteCode);
-                                await DatabaseService(gameid: inviteCode)
-                                    .addQuestionsToGame(widget.listOfQSets);
+                                if (widget.listOfQSets.isNotEmpty) {
+                                  setState(() {
+                                    _createGameOn = true;
+                                  });
+                                  await DatabaseService().createGame(
+                                      user.uid, inviteCode, counter);
+                                  await DatabaseService(gameid: inviteCode)
+                                      .addPlayer(userData, inviteCode);
+                                  await DatabaseService(gameid: inviteCode)
+                                      .addQuestionsToGame(widget.listOfQSets);
+                                } else {
+                                  setState(() {
+                                    _noQuestions = true;
+                                  });
+                                }
                               } else {
                                 setState(() {
                                   _noQuestions = true;

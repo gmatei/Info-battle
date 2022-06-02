@@ -115,7 +115,7 @@ class _HomeState extends State<Home> {
                     'Play',
                     style: GoogleFonts.balooDa2(
                         color: textColor,
-                        fontSize: deviceWidth / 13,
+                        fontSize: deviceWidth / 12,
                         fontWeight: FontWeight.bold),
                   ),
                   onPressed: () {
@@ -141,7 +141,7 @@ class _HomeState extends State<Home> {
                     'Quiz Creator',
                     style: GoogleFonts.balooDa2(
                         color: textColor,
-                        fontSize: deviceWidth / 13,
+                        fontSize: deviceWidth / 12,
                         fontWeight: FontWeight.bold),
                   ),
                   onPressed: () async {
@@ -167,7 +167,7 @@ class _HomeState extends State<Home> {
                     'Exit',
                     style: GoogleFonts.balooDa2(
                         color: textColor,
-                        fontSize: deviceWidth / 13,
+                        fontSize: deviceWidth / 12,
                         fontWeight: FontWeight.bold),
                   ),
                   onPressed: () {

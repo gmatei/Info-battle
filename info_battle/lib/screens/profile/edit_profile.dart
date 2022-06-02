@@ -147,7 +147,7 @@ class _EditProfileState extends State<EditProfile> {
                           SizedBox(
                             height: deviceHeight / 50,
                           ),
-                          if (pressedButton)
+                          if (pressedButton && _currentName.isNotEmpty)
                             Center(
                               child: Text(
                                 'Profile updated!',

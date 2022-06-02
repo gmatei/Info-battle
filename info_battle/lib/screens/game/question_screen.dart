@@ -8,9 +8,11 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_countdown_timer/current_remaining_time.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:info_battle/models/game_data.dart';
 import 'package:info_battle/models/question.dart';
 import 'package:info_battle/models/user_data.dart';
+import 'package:info_battle/utils/constants.dart';
 import 'package:info_battle/utils/loading.dart';
 
 import '../../services/database.dart';
@@ -51,13 +53,22 @@ class _QuestionScreenState extends State<QuestionScreen> {
               return Column(
                 children: [
                   AlertDialog(
-                    title: Text(questionData.qText),
+                    backgroundColor: formColor,
+                    elevation: 10.0,
+                    title: Text(
+                      questionData.qText,
+                      style: GoogleFonts.balooDa2(
+                        color: textColor,
+                        fontSize: deviceWidth / 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                   SizedBox(height: 20.0),
                   for (int i = 0; i < 4; i++)
                     Container(
-                      width: MediaQuery.of(context).size.width / 1.25,
-                      height: MediaQuery.of(context).size.height / 12,
+                      width: deviceWidth / 1.25,
+                      height: deviceHeight / 12,
                       margin: EdgeInsets.only(bottom: 20.0),
                       child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
@@ -132,7 +143,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         },
                         child: Text(
                           options[i],
-                          style: TextStyle(color: Colors.black),
+                          style: GoogleFonts.balooDa2(
+                            color: Colors.black,
+                            fontSize: deviceWidth / 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
@@ -145,16 +160,21 @@ class _QuestionScreenState extends State<QuestionScreen> {
                             if (time == null) {
                               return Text(
                                 'Time\'s up!',
-                                style: TextStyle(fontSize: 20),
+                                style: GoogleFonts.balooDa2(
+                                  color: textColor,
+                                  fontSize: deviceWidth / 20,
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.italic,
+                                ),
                               );
                             }
 
                             return CircularCountdown(
                               countdownTotal: 20,
                               countdownRemaining: time.sec,
-                              countdownRemainingColor: Colors.greenAccent,
+                              countdownRemainingColor: textColor,
                               textStyle: const TextStyle(
-                                color: Colors.greenAccent,
+                                color: textColor,
                                 fontSize: 25,
                               ),
                             );

@@ -208,8 +208,8 @@ class DatabaseService {
       'player1Score': 0,
       'player2Score': 0,
       'player3Score': 0,
-      'activeUpdate': 'none',
-      'attackedUpdate': 'none'
+      'activeUpdate': '...',
+      'attackedUpdate': '...'
     });
   }
 
@@ -350,7 +350,7 @@ class DatabaseService {
         break;
       case 'round':
         {
-          timeValue = 7;
+          timeValue = 9;
         }
         break;
       case 'playerChoice':
@@ -365,7 +365,7 @@ class DatabaseService {
         break;
       case 'showAnswer':
         {
-          timeValue = 22;
+          timeValue = 8;
         }
         break;
       case 'returnFromQuestion':
@@ -439,7 +439,7 @@ class DatabaseService {
   }
 
   Future resetAnswers() async {
-    Timer(Duration(seconds: 3), () async {
+    Timer(Duration(seconds: 1), () async {
       final prefs = await SharedPreferences.getInstance();
 
       if (prefs.getBool('updatedScore') == false) {
@@ -583,6 +583,34 @@ class DatabaseService {
             await gameCollection.doc(gameid).update({
               'player3Score': player3Score + 300,
               'attackedUpdate': '$player3 gained 300 points',
+            });
+          }
+        } else if (activePlayerAnswer != correctAnswer &&
+            attackedPlayerAnswer != correctAnswer) {
+          if (activePlayer == 'player1') {
+            await gameCollection.doc(gameid).update({
+              'activeUpdate': '$player1 lost 0 points',
+            });
+          } else if (activePlayer == 'player2') {
+            await gameCollection.doc(gameid).update({
+              'activeUpdate': '$player2 lost 0 points',
+            });
+          } else if (activePlayer == 'player3') {
+            await gameCollection.doc(gameid).update({
+              'activeUpdate': '$player3 lost 0 points',
+            });
+          }
+          if (attackedPlayer == 'player1') {
+            await gameCollection.doc(gameid).update({
+              'attackedUpdate': '$player1 gained 0 points',
+            });
+          } else if (attackedPlayer == 'player2') {
+            await gameCollection.doc(gameid).update({
+              'attackedUpdate': '$player2 gained 0 points',
+            });
+          } else if (attackedPlayer == 'player3') {
+            await gameCollection.doc(gameid).update({
+              'attackedUpdate': '$player3 gained 0 points',
             });
           }
         }
