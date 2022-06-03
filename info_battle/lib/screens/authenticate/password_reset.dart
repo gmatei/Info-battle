@@ -95,11 +95,7 @@ class _PasswordResetState extends State<PasswordReset> {
                           borderRadius: BorderRadius.circular(12),
                         )),
                     style: TextStyle(fontSize: 18),
-                    validator: (val) => val!.isEmpty
-                        ? 'Enter an email'
-                        : error != 'none'
-                            ? error
-                            : null,
+                    validator: (val) => val!.isEmpty ? 'Enter an email' : null,
                     onChanged: (val) {
                       setState(() => email = val.trim());
                     },
@@ -136,13 +132,14 @@ class _PasswordResetState extends State<PasswordReset> {
                             });
                           } else {
                             setState(() {
-                              error = 'clear';
+                              error =
+                                  'We\'ve sent you a reset link to your email adress';
                               loading = false;
                             });
                           }
                         }
                       }),
-                  error == 'clear'
+                  error != 'none'
                       ? Container(
                           margin: EdgeInsets.all(25),
                           decoration: BoxDecoration(
@@ -151,9 +148,9 @@ class _PasswordResetState extends State<PasswordReset> {
                           ),
                           child: Padding(
                             padding: EdgeInsets.symmetric(
-                                vertical: 4, horizontal: 16),
+                                vertical: 4, horizontal: 13),
                             child: Text(
-                              'We\'ve sent you a reset link to your email adress',
+                              error,
                               style: GoogleFonts.balooDa2(
                                   color: textColor,
                                   fontSize: deviceWidth / 21,
@@ -165,9 +162,9 @@ class _PasswordResetState extends State<PasswordReset> {
                           height: 0.0,
                           width: 0.0,
                         ),
-                  error != 'clear'
-                      ? SizedBox(height: deviceHeight / 2.3)
-                      : SizedBox(height: deviceHeight / 4),
+                  error == 'none'
+                      ? SizedBox(height: deviceHeight / 2.4)
+                      : SizedBox(height: deviceHeight / 3.7),
                   InkWell(
                       child: Text(
                         'Goanță Matei - Cosmin © 2022',
@@ -177,7 +174,20 @@ class _PasswordResetState extends State<PasswordReset> {
                         ),
                       ),
                       onTap: () => launchUrlString(
-                          'https://www.facebook.com/mateicosmin.goanta'))
+                          'https://www.facebook.com/mateicosmin.goanta')),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  InkWell(
+                      child: Text(
+                        'Contact: infobattle.team@gmail.com',
+                        style: GoogleFonts.balooDa2(
+                          color: textColor,
+                          fontSize: deviceWidth / 26,
+                        ),
+                      ),
+                      onTap: () =>
+                          launchUrlString('mailto:infobattle.team@gmail.com'))
                 ],
               ),
             ),

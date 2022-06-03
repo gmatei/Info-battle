@@ -81,7 +81,7 @@ class _RegisterState extends State<Register> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: 20.0),
+                  SizedBox(height: deviceHeight / 50),
                   TextFormField(
                     decoration: InputDecoration(
                         errorStyle: TextStyle(
@@ -109,16 +109,12 @@ class _RegisterState extends State<Register> {
                           borderRadius: BorderRadius.circular(12),
                         )),
                     style: TextStyle(fontSize: 18),
-                    validator: (val) => val!.isEmpty
-                        ? 'Enter an email'
-                        : error != 'none'
-                            ? error
-                            : null,
+                    validator: (val) => val!.isEmpty ? 'Enter an email' : null,
                     onChanged: (val) {
                       setState(() => email = val.trim());
                     },
                   ),
-                  SizedBox(height: 20.0),
+                  SizedBox(height: deviceHeight / 45),
                   TextFormField(
                     decoration: InputDecoration(
                         errorStyle: TextStyle(
@@ -154,7 +150,7 @@ class _RegisterState extends State<Register> {
                       setState(() => password = val);
                     },
                   ),
-                  SizedBox(height: 40.0),
+                  SizedBox(height: deviceHeight / 25),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         primary: buttonIdleColor,
@@ -188,7 +184,41 @@ class _RegisterState extends State<Register> {
                           }
                         }
                       }),
-                  SizedBox(height: deviceHeight / 3 + 5),
+                  error != 'none'
+                      ? SizedBox(
+                          height: deviceHeight / 40,
+                        )
+                      : SizedBox(
+                          height: 0.0,
+                        ),
+                  error != 'none'
+                      ? Container(
+                          margin: EdgeInsets.all(25),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16.0),
+                            color: formColor,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 4, horizontal: 13),
+                            child: Text(
+                              error,
+                              style: GoogleFonts.balooDa2(
+                                  color: textColor,
+                                  fontSize: deviceWidth / 21,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        )
+                      : SizedBox(
+                          height: 0.0,
+                          width: 0.0,
+                        ),
+                  error != 'none'
+                      ? SizedBox(height: deviceHeight / 9)
+                      : SizedBox(
+                          height: deviceHeight / 3.03,
+                        ),
                   InkWell(
                       child: Text(
                         'Goanță Matei - Cosmin © 2022',
@@ -198,7 +228,20 @@ class _RegisterState extends State<Register> {
                         ),
                       ),
                       onTap: () => launchUrlString(
-                          'https://www.facebook.com/mateicosmin.goanta'))
+                          'https://www.facebook.com/mateicosmin.goanta')),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  InkWell(
+                      child: Text(
+                        'Contact: infobattle.team@gmail.com',
+                        style: GoogleFonts.balooDa2(
+                          color: textColor,
+                          fontSize: deviceWidth / 26,
+                        ),
+                      ),
+                      onTap: () =>
+                          launchUrlString('mailto:infobattle.team@gmail.com'))
                 ],
               ),
             ),

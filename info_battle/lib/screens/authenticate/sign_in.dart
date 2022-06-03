@@ -85,7 +85,7 @@ class _SignInState extends State<SignIn> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: 20.0),
+                  SizedBox(height: deviceHeight / 50),
                   TextFormField(
                     decoration: InputDecoration(
                         errorStyle: TextStyle(
@@ -118,7 +118,7 @@ class _SignInState extends State<SignIn> {
                       setState(() => email = val.trim());
                     },
                   ),
-                  SizedBox(height: 20.0),
+                  SizedBox(height: deviceHeight / 45),
                   TextFormField(
                     decoration: InputDecoration(
                         errorStyle: TextStyle(
@@ -149,14 +149,12 @@ class _SignInState extends State<SignIn> {
                     obscureText: true,
                     validator: (val) => val!.length < 6
                         ? 'Enter a password 6+ characters long'
-                        : error != 'none'
-                            ? error
-                            : null,
+                        : null,
                     onChanged: (val) {
                       setState(() => password = val);
                     },
                   ),
-                  SizedBox(height: 40.0),
+                  SizedBox(height: deviceHeight / 25),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         primary: buttonIdleColor,
@@ -191,7 +189,43 @@ class _SignInState extends State<SignIn> {
                           }
                         }
                       }),
-                  SizedBox(height: deviceHeight / 7),
+                  error != 'none'
+                      ? SizedBox(
+                          height: deviceHeight / 40,
+                        )
+                      : SizedBox(
+                          height: 0.0,
+                        ),
+                  error != 'none'
+                      ? Container(
+                          margin: EdgeInsets.all(25),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16.0),
+                            color: formColor,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 4, horizontal: 13),
+                            child: Text(
+                              error,
+                              style: GoogleFonts.balooDa2(
+                                  color: textColor,
+                                  fontSize: deviceWidth / 21,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        )
+                      : SizedBox(
+                          height: 0.0,
+                          width: 0.0,
+                        ),
+                  error != 'none'
+                      ? SizedBox(
+                          height: deviceHeight / 100,
+                        )
+                      : SizedBox(
+                          height: deviceHeight / 6,
+                        ),
                   InkWell(
                       child: Text(
                         'I forgot my password... :(',
@@ -205,7 +239,13 @@ class _SignInState extends State<SignIn> {
                             MaterialPageRoute(
                                 builder: (context) => PasswordReset()),
                           )),
-                  SizedBox(height: deviceHeight / 6),
+                  error != 'none'
+                      ? SizedBox(
+                          height: deviceHeight / 17,
+                        )
+                      : SizedBox(
+                          height: deviceHeight / 7.5,
+                        ),
                   InkWell(
                       child: Text(
                         'Goanță Matei - Cosmin © 2022',
@@ -215,7 +255,20 @@ class _SignInState extends State<SignIn> {
                         ),
                       ),
                       onTap: () => launchUrlString(
-                          'https://www.facebook.com/mateicosmin.goanta'))
+                          'https://www.facebook.com/mateicosmin.goanta')),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  InkWell(
+                      child: Text(
+                        'Contact: infobattle.team@gmail.com',
+                        style: GoogleFonts.balooDa2(
+                          color: textColor,
+                          fontSize: deviceWidth / 26,
+                        ),
+                      ),
+                      onTap: () =>
+                          launchUrlString('mailto:infobattle.team@gmail.com'))
                 ],
               ),
             ),
