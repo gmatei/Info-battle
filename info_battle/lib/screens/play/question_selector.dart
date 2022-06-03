@@ -3,14 +3,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:info_battle/models/questionset.dart';
 import 'package:info_battle/screens/play/quiz_list.dart';
-import 'package:info_battle/screens/play/quiz_tile.dart';
 import 'package:info_battle/services/database.dart';
-import 'package:info_battle/utils/loading.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/constants.dart';

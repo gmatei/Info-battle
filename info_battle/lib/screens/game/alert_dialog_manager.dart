@@ -1,14 +1,11 @@
 //@dart=2.9
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, missing_return
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:info_battle/models/game_data.dart';
 import 'package:info_battle/models/game_player.dart';
-import 'package:info_battle/screens/game/question_screen.dart';
 import 'package:info_battle/utils/constants.dart';
 
 import '../../models/user_data.dart';
@@ -96,6 +93,8 @@ class _AlertDialogManagerState extends State<AlertDialogManager> {
         {
           if (widget.userData.name == widget.gameData.activePlayer) {
             return AlertDialog(
+              insetPadding:
+                  EdgeInsets.only(top: 5, bottom: 20, left: 0, right: 0),
               backgroundColor: formColor,
               elevation: 10.0,
               title: AnimatedTextKit(
@@ -134,8 +133,7 @@ class _AlertDialogManagerState extends State<AlertDialogManager> {
                             List<PlayerData> playerData = snapshot.data;
                             playerData.removeWhere((element) =>
                                 element.uid == widget.userData.uid);
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            return Column(
                               children: [
                                 TextButton.icon(
                                   icon: CircleAvatar(

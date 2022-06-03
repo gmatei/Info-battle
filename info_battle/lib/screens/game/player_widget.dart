@@ -23,7 +23,7 @@ class PlayerWidget extends StatelessWidget {
           children: [
             Flexible(
               child: Container(
-                height: 100,
+                height: 90,
                 decoration: BoxDecoration(
                   border: Border.all(color: buttonIdleColor, width: 3),
                   borderRadius: BorderRadius.circular(25),

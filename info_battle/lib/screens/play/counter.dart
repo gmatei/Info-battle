@@ -1,4 +1,6 @@
 //@dart=2.9
+// ignore_for_file: prefer_const_constructors, must_be_immutable
+
 library counter;
 
 import 'package:flutter/material.dart';
@@ -25,7 +27,7 @@ class Counter extends StatelessWidget {
   final num minValue;
   final num maxValue;
   final int decimalPlaces;
-  num selectedValue;
+  final num selectedValue;
   final num step;
   Color color;
   TextStyle textStyle;
@@ -65,8 +67,8 @@ class Counter extends StatelessWidget {
               onPressed: _decrementCounter,
               elevation: 2,
               tooltip: 'Decrement',
-              child: Icon(Icons.remove),
               backgroundColor: color,
+              child: Icon(Icons.remove),
             ),
           ),
           Container(
@@ -83,8 +85,8 @@ class Counter extends StatelessWidget {
               onPressed: _incrementCounter,
               elevation: 2,
               tooltip: 'Increment',
-              child: Icon(Icons.add),
               backgroundColor: color,
+              child: Icon(Icons.add),
             ),
           ),
         ],

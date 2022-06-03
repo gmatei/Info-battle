@@ -2,7 +2,6 @@
 // ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures
 
 import 'dart:async';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -81,27 +80,33 @@ class DatabaseService {
   }
 
   Future updateQuestion() async {
-    Stream<Question> randomQuestion = gameCollection
-        .doc(gameid)
-        .collection("GameQuestions")
-        .snapshots()
-        .map(_questionFromSnapshot);
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('qUpdated') == false) {
+      await prefs.setBool('qUpdated', true);
 
-    randomQuestion.listen((question) async {
-      Map<String, String> questionMap = {
-        'qText': question.qText,
-        'option1': question.option1,
-        'option2': question.option2,
-        'option3': question.option3,
-        'option4': question.option4,
-        'correctAnswer': question.correctAnswer
-      };
+      Stream<Question> randomQuestion = gameCollection
+          .doc(gameid)
+          .collection("GameQuestions")
+          .snapshots()
+          .map(_questionFromSnapshot);
 
-      await gameCollection.doc(gameid).update({
-        'currentQuestion': questionMap,
+      randomQuestion.listen((question) async {
+        Map<String, String> questionMap = {
+          'qText': question.qText,
+          'option1': question.option1,
+          'option2': question.option2,
+          'option3': question.option3,
+          'option4': question.option4,
+          'correctAnswer': question.correctAnswer
+        };
+
+        await gameCollection.doc(gameid).update({
+          'currentQuestion': questionMap,
+        });
+
+        return;
       });
-      return;
-    });
+    }
   }
 
   //get random question stream
@@ -360,17 +365,23 @@ class DatabaseService {
         break;
       case 'attack':
         {
-          timeValue = 1;
+          if (activePlayer == 'Bot John' || activePlayer == 'Bot Mike')
+            timeValue = 3;
+          else
+            timeValue = 1;
+
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setBool('qUpdated', false);
         }
         break;
       case 'showAnswer':
         {
-          timeValue = 22;
+          timeValue = 20;
         }
         break;
       case 'returnFromQuestion':
         {
-          timeValue = 2;
+          timeValue = 5;
         }
         break;
 
@@ -439,7 +450,7 @@ class DatabaseService {
   }
 
   Future resetAnswers() async {
-    Timer(Duration(seconds: 1), () async {
+    Timer(Duration(seconds: 4), () async {
       final prefs = await SharedPreferences.getInstance();
 
       if (prefs.getBool('updatedScore') == false) {
@@ -589,15 +600,15 @@ class DatabaseService {
             attackedPlayerAnswer != correctAnswer) {
           if (activePlayer == 'player1') {
             await gameCollection.doc(gameid).update({
-              'activeUpdate': '$player1 lost 0 points',
+              'activeUpdate': '$player1 gained 0 points',
             });
           } else if (activePlayer == 'player2') {
             await gameCollection.doc(gameid).update({
-              'activeUpdate': '$player2 lost 0 points',
+              'activeUpdate': '$player2 gained 0 points',
             });
           } else if (activePlayer == 'player3') {
             await gameCollection.doc(gameid).update({
-              'activeUpdate': '$player3 lost 0 points',
+              'activeUpdate': '$player3 gained 0 points',
             });
           }
           if (attackedPlayer == 'player1') {

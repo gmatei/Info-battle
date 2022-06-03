@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:info_battle/models/game_data.dart';
 import 'package:info_battle/screens/wrappers/home_wrapper.dart';
 import 'package:info_battle/utils/loading.dart';
-import 'package:provider/provider.dart';
 
 import '../../models/game_player.dart';
 import '../../services/database.dart';
@@ -32,8 +31,6 @@ class Pair<T1, T2> {
 class _GameOverState extends State<GameOver> {
   @override
   Widget build(BuildContext context) {
-    final players = Provider.of<List<PlayerData>>(context);
-
     var playerScores = [
       Pair(widget.gameData.player1Score, widget.gameData.player1),
       Pair(widget.gameData.player2Score, widget.gameData.player2),

@@ -2,22 +2,19 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:info_battle/models/questionset.dart';
 import 'package:info_battle/screens/play/quiz_tile.dart';
-import 'package:info_battle/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 class QuizList extends StatefulWidget {
-  QuizList(
+  const QuizList(
     this.callBackCheck,
     this.quizName, {
     Key key,
   }) : super(key: key);
 
-  Function callBackCheck;
-  String quizName;
+  final Function callBackCheck;
+  final String quizName;
 
   @override
   State<QuizList> createState() => _QuizListState();

@@ -1,7 +1,5 @@
 // @dart=2.9
 
-import 'package:info_battle/models/question.dart';
-
 class QuestionSet {
   final String qsetId;
   final String addedBy;

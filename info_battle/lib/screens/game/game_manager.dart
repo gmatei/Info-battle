@@ -1,20 +1,15 @@
 //@dart=2.9
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_call_super
 
 import 'dart:ui';
 
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:info_battle/models/game_data.dart';
 import 'package:info_battle/models/game_player.dart';
 import 'package:info_battle/models/user_data.dart';
 import 'package:info_battle/screens/game/alert_dialog_manager.dart';
-import 'package:info_battle/screens/game/player_widget.dart';
 import 'package:info_battle/screens/game/question_screen.dart';
-import 'package:info_battle/screens/profile/profile_widget.dart';
 import 'package:info_battle/utils/loading.dart';
 import 'package:provider/provider.dart';
 
@@ -74,6 +69,7 @@ class _GameManagerState extends State<GameManager> {
                         ),
                       ),
                       body: Container(
+                        width: deviceWidth,
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             alignment: Alignment.topCenter,

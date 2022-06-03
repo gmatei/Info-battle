@@ -1,13 +1,8 @@
 //@dart=2.9
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:io';
 import 'dart:ui';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:info_battle/models/app_user.dart';
@@ -18,7 +13,6 @@ import 'package:info_battle/utils/loading.dart';
 import 'package:provider/provider.dart';
 import '../../utils/constants.dart';
 import 'profile_widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Profile extends StatefulWidget {
   final Function toggleView;

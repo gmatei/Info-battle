@@ -1,10 +1,9 @@
 //@dart=2.9
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:info_battle/models/app_user.dart';
-import 'package:info_battle/models/user_data.dart';
-import 'package:info_battle/models/user_data.dart';
 import 'package:info_battle/screens/authenticate/authenticate.dart';
-import 'package:info_battle/screens/home/home.dart';
 import 'package:info_battle/screens/wrappers/home_wrapper.dart';
 import 'package:provider/provider.dart';
 

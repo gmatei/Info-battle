@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, import_of_legacy_library_into_null_safe
 
 import 'package:flutter/material.dart';
+import 'package:info_battle/models/user_data.dart';
 
 InputDecoration textInputDecoration = InputDecoration(
   fillColor: Color.fromARGB(135, 255, 255, 255),
@@ -57,3 +58,20 @@ var medalImageSilver = const NetworkImage(
 
 var medalImageBronze = const NetworkImage(
     'https://firebasestorage.googleapis.com/v0/b/info-battle.appspot.com/o/images%2FbronzeMedal.png?alt=media&token=ed9ac892-f86e-4bbf-86a2-d2dc6df067ee');
+
+String defaultPlayerPic =
+    'https://firebasestorage.googleapis.com/v0/b/info-battle.appspot.com/o/images%2Fdefault.png?alt=media&token=3ad928ef-cd0c-47fe-a808-25f2ec0c2ced';
+
+UserData botMike = UserData(
+  uid: '4tlHxmm29112021CAIdZsV5o3h18',
+  name: 'Bot Mike',
+  email: 'mikebot@mikebot.com',
+  imagePath: defaultPlayerPic,
+);
+
+UserData botJohn = UserData(
+  uid: 'RtlvxMm09032001QAleZsV5O3a13',
+  name: 'Bot John',
+  email: 'johnbot@mikebot.com',
+  imagePath: defaultPlayerPic,
+);

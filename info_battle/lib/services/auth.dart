@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:info_battle/models/app_user.dart';
 import 'package:info_battle/services/database.dart';
 
+import '../utils/constants.dart';
+
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
@@ -27,9 +29,7 @@ class AuthService {
 
       //create a new document for the user with the uid
       await DatabaseService(uid: user.uid).updateUserData(
-          user.email.split('@')[0],
-          'https://firebasestorage.googleapis.com/v0/b/info-battle.appspot.com/o/images%2Fdefault.png?alt=media&token=3ad928ef-cd0c-47fe-a808-25f2ec0c2ced',
-          user.email);
+          user.email.split('@')[0], defaultPlayerPic, user.email);
 
       return _appUserFromUser(user);
     } catch (error) {

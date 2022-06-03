@@ -4,8 +4,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:info_battle/models/game_data.dart';
@@ -28,7 +26,6 @@ class JoinGame extends StatefulWidget {
 class _JoinGameState extends State<JoinGame> {
   final _formKey = GlobalKey<FormState>();
   bool _joinedGame = false;
-  bool _wrongCode = false;
   String _currentCode;
 
   @override

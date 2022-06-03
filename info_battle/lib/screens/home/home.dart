@@ -1,21 +1,13 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, import_of_legacy_library_into_null_safe
 
 import 'dart:ui';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:info_battle/screens/play/play.dart';
-import 'package:info_battle/screens/profile/profile.dart';
 import 'package:info_battle/screens/quiz_creator/quiz_creator.dart';
 import 'package:info_battle/services/auth.dart';
-import 'package:provider/provider.dart';
-import 'package:info_battle/services/database.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../../utils/constants.dart';
 
 class Home extends StatefulWidget {

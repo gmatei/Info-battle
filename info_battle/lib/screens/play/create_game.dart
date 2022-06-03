@@ -1,5 +1,5 @@
 //@dart=2.9
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, must_be_immutable
 
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -160,7 +160,7 @@ class _CreateGameState extends State<CreateGame> {
                                     ],
                                   ),
                                   Container(
-                                    margin: EdgeInsets.all(25),
+                                    margin: EdgeInsets.symmetric(vertical: 20),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(16.0),
                                       color: formColor,
@@ -178,7 +178,7 @@ class _CreateGameState extends State<CreateGame> {
                                     ),
                                   ),
                                   Container(
-                                    margin: EdgeInsets.all(25),
+                                    margin: EdgeInsets.symmetric(vertical: 15),
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                         primary: buttonIdleColor,
@@ -203,7 +203,8 @@ class _CreateGameState extends State<CreateGame> {
                                   ),
                                   _createGameOn
                                       ? Container(
-                                          margin: EdgeInsets.all(25),
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 15),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(16.0),
@@ -234,7 +235,52 @@ class _CreateGameState extends State<CreateGame> {
                                             ),
                                           ),
                                         )
-                                      : Container()
+                                      : Container(),
+                                  gameData.nrConnectedUsers != 3 &&
+                                          _createGameOn
+                                      ? Container(
+                                          margin: EdgeInsets.only(top: 10),
+                                          child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              primary: buttonIdleColor,
+                                              onPrimary: buttonActiveColor,
+                                              shadowColor: buttonshadowColor,
+                                              elevation: 10,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20.0)),
+                                              minimumSize: Size(deviceWidth / 2,
+                                                  deviceHeight / 18),
+                                            ),
+                                            child: Text(
+                                              'Start with bots',
+                                              style: GoogleFonts.balooDa2(
+                                                  color: textColor,
+                                                  fontSize: deviceWidth / 18,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            onPressed: () async {
+                                              if (gameData.nrConnectedUsers ==
+                                                  2) {
+                                                await DatabaseService(
+                                                        gameid: inviteCode)
+                                                    .addPlayer(
+                                                        botMike, inviteCode);
+                                              } else {
+                                                await DatabaseService(
+                                                        gameid: inviteCode)
+                                                    .addPlayer(
+                                                        botMike, inviteCode);
+                                                await DatabaseService(
+                                                        gameid: inviteCode)
+                                                    .addPlayer(
+                                                        botJohn, inviteCode);
+                                              }
+                                            },
+                                          ),
+                                        )
+                                      : Container(),
                                 ])),
                               ),
                             ));

@@ -1,11 +1,8 @@
 //@dart=2.9
 // ignore_for_file: prefer_const_constructors
-
-import 'package:animated_text_kit/animated_text_kit.dart';
+import 'dart:math';
 import 'package:circular_countdown/circular_countdown.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_countdown_timer/current_remaining_time.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -133,11 +130,26 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                 widget.gameData.activeAnswer == 'none') {
                               DatabaseService(gameid: widget.gameData.gameId)
                                   .setActiveAnswer(options[i]);
-                            }
-                            if (isAttackedPlayer &&
+                              if (widget.gameData.attackedPlayer ==
+                                      'Bot Mike' ||
+                                  widget.gameData.attackedPlayer ==
+                                      'Bot John') {
+                                Random random = Random();
+                                int randomNumber = random.nextInt(4);
+                                DatabaseService(gameid: widget.gameData.gameId)
+                                    .setAttackedAnswer(options[randomNumber]);
+                              }
+                            } else if (isAttackedPlayer &&
                                 widget.gameData.attackedAnswer == 'none') {
                               DatabaseService(gameid: widget.gameData.gameId)
                                   .setAttackedAnswer(options[i]);
+                              if (widget.gameData.activePlayer == 'Bot Mike' ||
+                                  widget.gameData.activePlayer == 'Bot John') {
+                                Random random = Random();
+                                int randomNumber = random.nextInt(4);
+                                DatabaseService(gameid: widget.gameData.gameId)
+                                    .setActiveAnswer(options[randomNumber]);
+                              }
                             }
                           }
                         },
@@ -152,7 +164,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
                       ),
                     ),
                   widget.gameData.activeAnswer == 'none' &&
-                          widget.gameData.attackedAnswer == 'none'
+                          widget.gameData.attackedAnswer == 'none' &&
+                          widget.gameData.command != 'showAnswer' &&
+                          widget.gameData.command != 'returnFromQuestion'
                       ? CountdownTimer(
                           endTime:
                               DateTime.now().millisecondsSinceEpoch + 1000 * 20,
