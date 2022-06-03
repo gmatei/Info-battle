@@ -346,8 +346,6 @@ class _AddQuestionState extends State<AddQuestion> {
         setState(() {
           isLoading = false;
         });
-      }).catchError((e) {
-        print(e);
       });
     }
   }

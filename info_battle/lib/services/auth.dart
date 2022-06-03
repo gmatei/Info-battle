@@ -33,7 +33,7 @@ class AuthService {
 
       return _appUserFromUser(user);
     } catch (error) {
-      print(error.toString());
+      //print(error.toString());
       return null;
     }
   }
@@ -46,7 +46,7 @@ class AuthService {
       User user = result.user;
       return _appUserFromUser(user);
     } catch (error) {
-      print(error.toString());
+      //print(error.toString());
       return null;
     }
   }
@@ -56,7 +56,7 @@ class AuthService {
     try {
       return await _firebaseAuth.signOut();
     } catch (error) {
-      print(error.toString());
+      //print(error.toString());
       return null;
     }
   }
@@ -66,7 +66,7 @@ class AuthService {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
       return true;
     } catch (error) {
-      print(error.toString());
+      //print(error.toString());
       return null;
     }
   }

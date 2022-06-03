@@ -172,7 +172,7 @@ class DatabaseService {
 
   Future<void> addQuizData(Map quizData, String quizId) async {
     await questionCollection.doc(quizId).set(quizData).catchError((e) {
-      print(e);
+      //print(e);
     });
   }
 
@@ -182,7 +182,7 @@ class DatabaseService {
         .collection("QuizContent")
         .add(quizData)
         .catchError((e) {
-      print(e);
+      //print(e);
     });
   }
 
