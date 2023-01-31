@@ -1,2 +1,2 @@
 # Info battle
- Proiect de licenta 2022
+Mobile app developed in Flutter serving as the project for the Bachelor's degree.
